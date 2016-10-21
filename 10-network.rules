@@ -1,0 +1,9 @@
+# Archivo de Configuracion persistente ETH
+# Ubicacion /etc/udev/rules.d/10-network.rules
+# ip link | awk '/ether/ {print $2}' or cat /sys/class/net/*/address or ifconfig | grep HW or ifconfig | grep HW | awk '{print $5}'
+
+# Public eth0
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:00:00:00:00:00", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="en*", NAME="eth0"
+
+# Local Net eth1
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="11:11:11:11:11:11", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="en*", NAME="eth1"
