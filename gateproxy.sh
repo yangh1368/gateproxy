@@ -248,7 +248,7 @@ function is_eth(){
 
 # RANGO DHCP
 function is_rangeini(){
-	read -p "Introduzca la nueva ip inicial rango-dhcp (Ejemplo: 192.168.0.100): " RANGEINI
+	read -p "Introduzca la ip inicial rango-dhcp (Ejemplo: 192.168.0.100): " RANGEINI
 	RANGEININEW=`echo $RANGEINI | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$RANGEININEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.100:$RANGEININEW:g"  "{}"
@@ -257,7 +257,7 @@ function is_rangeini(){
 }
 
 function is_rangefin(){
-	read -p "Introduzca la nueva ip final rango-dhcp (Ejemplo: 192.168.0.250): " RANGEFIN
+	read -p "Introduzca la ip final rango-dhcp (Ejemplo: 192.168.0.250): " RANGEFIN
 	RANGEFINNEW=`echo $RANGEFIN | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$RANGEFINNEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.250:$RANGEFINNEW:g"  "{}"
@@ -351,7 +351,7 @@ echo
     # Remove sendmail
 	sudo service sendmail stop >/dev/null 2>&1 && sudo update-rc.d -f sendmail remove
 	# Pack Install
-	sudo apt update && sudo apt -f install && sudo apt -y install build-essential checkinstall cdbs devscripts dh-make fakeroot libxml-parser-perl check avahi-daemon automake make dpatch patchutils autotools-dev debhelper quilt xutils lintian cmake libtool autoconf git git-core subversion bzr gcc patch module-assistant libupnp-dev dkms linux-headers-$(uname -r) rcconf dialog aptitude bleachbit gksu libgksu2-0 vmm libglib2.0-0 ntfs-config dconf-editor dconf-tools jfsutils sysinfo hardinfo deborphan gtkorphan xsltproc lshw-gtk gedit curl uudeview bluefish geany gparted xfsprogs reiserfsprogs reiser4progs kpartx dmraid util-linux preload prelink synaptic perl libwww-perl libmailtools-perl libmime-lite-perl librrds-perl libdbi-perl libxml-simple-perl libhttp-server-simple-perl libconfig-general-perl libio-socket-ssl-perl libdate-manip-perl libclass-dbi-mysql-perl libnet-ssleay-perl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python python-pcapy python-cairo python-gi python-gobject python-gobject-2 python-gtk2 python-notify python-dev python-glade2 unattended-upgrades gnome-disk-utility gdebi gdebi-core unace zip unzip p7zip-full sharutils mpack arj cabextract rar unrar file-roller ipset vim ttf-dejavu hfsplus hfsprogs hfsutils hfsutils-tcltk exfat-fuse exfat-utils zenity w3m lsscsi winbind fping freefilesync p7zip-rar linux-tools-common searchmonkey ppa-purge google-chrome-stable webmin firefox snapd systemback systemback-locales unetbootin ubuntu-tweak rrdtool procps geoip-database ipcalc ttf-mscorefonts-installer dmidecode libsasl2-modules postfix postfix-mysql postfix-doc mailutils && sudo apt -f install && sudo dpkg --configure -a && sudo apt -f install && sudo m-a prepare
+	sudo apt update && sudo apt -f install && sudo apt -y install build-essential checkinstall cdbs devscripts dh-make fakeroot libxml-parser-perl check avahi-daemon automake make dpatch patchutils autotools-dev debhelper quilt xutils lintian cmake libtool autoconf git git-core subversion bzr gcc patch module-assistant libupnp-dev dkms linux-headers-$(uname -r) rcconf dialog aptitude bleachbit gksu libgksu2-0 vmm libglib2.0-0 ntfs-config dconf-editor dconf-tools jfsutils sysinfo hardinfo deborphan gtkorphan xsltproc lshw-gtk gedit curl openssl uudeview bluefish geany gparted xfsprogs reiserfsprogs reiser4progs kpartx dmraid util-linux preload prelink synaptic perl libwww-perl libmailtools-perl libmime-lite-perl librrds-perl libdbi-perl libxml-simple-perl libhttp-server-simple-perl libconfig-general-perl libio-socket-ssl-perl libdate-manip-perl libclass-dbi-mysql-perl libnet-ssleay-perl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python python-pcapy python-cairo python-gi python-gobject python-gobject-2 python-gtk2 python-notify python-dev python-glade2 unattended-upgrades gnome-disk-utility gdebi gdebi-core unace zip unzip p7zip-full sharutils mpack arj cabextract rar unrar file-roller ipset vim ttf-dejavu hfsplus hfsprogs hfsutils hfsutils-tcltk exfat-fuse exfat-utils zenity w3m lsscsi winbind fping freefilesync p7zip-rar linux-tools-common searchmonkey ppa-purge google-chrome-stable webmin firefox snapd systemback systemback-locales unetbootin ubuntu-tweak rrdtool procps geoip-database ipcalc dmidecode libsasl2-modules postfix postfix-mysql postfix-doc mailutils && sudo apt -f install && sudo dpkg --configure -a && sudo apt -f install && sudo m-a prepare
 	sudo cp -f /etc/postfix/master.cf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/mail/master.cf /etc/postfix/master.cf
 	sudo cp -f /etc/postfix/main.cf{,.bak} >/dev/null 2>&1
@@ -373,7 +373,7 @@ function is_servers(){
 	echo
 	sudo add-apt-repository ppa:ondrej/php --yes
 	sudo apt-get install -y language-pack-en-base python-software-properties
-	sudo apt update && sudo apt -f install && sudo apt -y install sudo apt-get install php7.0 php7.0-common php7.0-mysql libmcrypt-dev mcrypt php7.0-mcrypt php7.0-gd php-xml php-xml-parser php7.0-curl php-soap libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap php7.0-mysql php7.0-dev php-pear libapache2-mod-php php-gettext php-xml php-soap php-mcrypt && sudo apt -f install
+	sudo apt update && sudo apt -f install && sudo apt -y install php7.0 php7.0-common php7.0-mysql libmcrypt-dev mcrypt php7.0-mcrypt php7.0-gd php-xml php-xml-parser php7.0-curl php-soap libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap php7.0-mysql php7.0-dev php-pear libapache2-mod-php php-gettext php-xml php-soap php-mcrypt && sudo apt -f install
 	echo OK
 	echo
 	sudo apt -y install squid squidclient squid-cgi squid-langpack && sudo apt -f install
@@ -444,6 +444,25 @@ Seleccione n para activar Proxy No-Transparente (3128) y WPAD-PAC (s/n)" answer
 	echo
 	is_proxy
 	echo OK
+			break;;
+        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+    esac
+done
+
+# MICROSOFT FONTS
+clear
+echo
+while true; do
+	read -p "Desea instalar las fuentes Microsoft ttf-mscorefonts? (s/n)" answer
+    	case $answer in
+          [Ss]* )
+		# execute command yes
+	sudo chmod 777 /var/lib/update-notifier/package-data-downloads/partial
+	sudo apt-get -y install ttf-mscorefonts-installer
+	echo OK
+			break;;
+          	[Nn]* )
+		# execute command no
 			break;;
         * ) echo; echo "Por favor responda SI (s) o NO (n).";;
     esac
@@ -929,9 +948,10 @@ Desea instalar esos Modulos? (puede elegir cada uno) (s/n)" answer
 done
 
 # MODULOS SE SEGURIDAD AVANZADOS
+
+function is_security(){
 clear
 echo
-function is_security(){
 while true; do
    read -p "Desea instalar el Pack de Seguridad (Usuarios Avanzados)?
 Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (s/n)" answer
@@ -1130,7 +1150,7 @@ libpam-cracklib, 2-Factor Google Authentication y Veracrypt (s/n)" answer
 	sudo apt -f install && sudo apt -y install libpam-cracklib
 	sudo cp -f /etc/pam.d/common-password{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/security/common-password /etc/pam.d/common-password
-	sudo apt -f install && sudo apt -y libpam-google-authenticator
+	sudo apt -f install && sudo apt -y install libpam-google-authenticator
 	sudo cp -f /etc/pam.d/common-auth{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/security/common-auth /etc/pam.d/common-auth
 	sudo add-apt-repository ppa:unit193/encryption --yes
@@ -1168,6 +1188,8 @@ toolkit, Byobu, dsniff y wireless-tools (s/n)" answer
 done
 }
 
+clear
+echo
 while true; do
 	read -p "Modulo de Seguridad, Cifrado y Auditoria (Usuarios Avanzados):
 
@@ -1252,13 +1274,13 @@ done
 }
 is_dnsmasq
 
-# VPN-SSH
-function is_vpnssh(){
+# VPN
+function is_vpn(){
 clear
 echo
 while true; do
-   read -p "Desea instalar el modulo VPN-SSH (Usuarios Avanzados)
-4nonimizer, FruhoVPN, OpenVPN, OpenSSH? (s/n)" answer
+   read -p "Desea instalar el modulo VPN (Usuarios Avanzados)
+4nonimizer, FruhoVPN, OpenVPN? (s/n)" answer
 		case $answer in
           [Ss]* )
 		# execute command yes
@@ -1269,13 +1291,13 @@ while true; do
 	echo "HowTO https://github.com/Hackplayers/4nonimizer"
 	echo
     echo "Instalando FruhoVPN..."
-	sudo rm fruho*.deb && sudo apt -y purge fruho >/dev/null 2>&1
+	sudo rm fruho*.deb >/dev/null 2>&1 && sudo apt -y purge fruho >/dev/null 2>&1
 	last=$(wget -O - https://github.com/fruho/fruhoapp/releases | grep -Po '/[^"]+download[^"]+' | grep deb | grep amd64 | sort | tail -1)
 	wget https://github.com$last -O fruho.deb
 	sudo dpkg -i fruho.deb && sudo apt-get install -f
 	echo OK
-	echo "Instalando OpenVPN y OpenSSH..."
-	sudo apt -f install && sudo apt -y install openvpn curl openssl
+	echo "Instalando OpenVPN..."
+	sudo apt -f install && sudo apt -y install openvpn
 	echo
 			break;;
           	[Nn]* )
@@ -1285,7 +1307,7 @@ while true; do
     esac
 done
 }
-is_vpnssh
+is_vpn
 
 # BLACKUSB
 clear
