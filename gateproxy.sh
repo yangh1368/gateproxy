@@ -12,7 +12,7 @@ gp=~/gateproxy
 function is_xenial(){
 is_xenial=`lsb_release -sc | grep xenial`
 	if [ "$is_xenial" ]; then
-    echo
+    	echo
 	echo "Sistema Operativo Correcto"
   else
 	clear
@@ -319,16 +319,15 @@ done
 clear
 echo
 echo "Eliminando servicios no esenciales..."
-gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']" && sleep 1 && gsettings set com.canonical.desktop.interface scrollbar-mode normal >/dev/null 2>&1
-sudo update-desktop-database
-echo OK
-echo
-echo
+	gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']" && sleep 1 && gsettings set com.canonical.desktop.interface scrollbar-mode normal >/dev/null 2>&1
+	sudo update-desktop-database
+	echo OK
 # LIMPIEZA Y ACTUALIZACION
 updateandclean(){
-	echo "Su sistema se esta actualizando..."
+clear
+echo
+echo "Su sistema se esta actualizando..."
 	sudo apt update && sleep 1 && sudo apt -y upgrade && sudo apt -y dist-upgrade && sleep 1 && sudo apt install --fix-missing -y && sleep 1 && sudo apt -f install && sudo fc-cache && sleep 1 && sudo sync && sleep 1 && sudo sysctl -w vm.drop_caches=3 vm.swappiness=20 && sleep 1 && sudo apt -y autoremove && sleep 1 && sudo apt -y autoclean && sleep 1 && sudo apt -y clean && sleep 1 && sudo dpkg --configure -a && sleep 1 && sudo apt -f install
-	echo "Su sistema se ha actualizado"
 }
 updateandclean
 
@@ -1073,7 +1072,7 @@ Desea instalar Snort? (with Barnyard2, PulledPork, Snorby) (s/n)" answer
 	echo "Instalando Docker..."
 	sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 	echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list
-    sudo apt update && sudo apt -f install && sudo apt -y install docker-engine
+    	sudo apt update && sudo apt -f install && sudo apt -y install docker-engine
 	sudo usermod -aG docker $(whoami)
 	sudo systemctl enable docker && sudo systemctl start docker
 	echo "Vea comparativa VBox vs Docker en goo.gl/8FfC8O"
@@ -1290,7 +1289,7 @@ while true; do
 	echo OK
 	echo "HowTO https://github.com/Hackplayers/4nonimizer"
 	echo
-    echo "Instalando FruhoVPN..."
+    	echo "Instalando FruhoVPN..."
 	sudo rm fruho*.deb >/dev/null 2>&1 && sudo apt -y purge fruho >/dev/null 2>&1
 	last=$(wget -O - https://github.com/fruho/fruhoapp/releases | grep -Po '/[^"]+download[^"]+' | grep deb | grep amd64 | sort | tail -1)
 	wget https://github.com$last -O fruho.deb
@@ -1323,7 +1322,7 @@ Desea activar la proteccion de puertos usb via udev? (s/n)" answer
 	sudo cp -f blackusb/blackusb /etc/init.d >/dev/null 2>&1
 	sudo chown root:root /etc/init.d/blackusb
 	sudo chmod +x /etc/init.d/blackusb
-    sudo /etc/init.d/blackusb on >/dev/null 2>&1
+    	sudo /etc/init.d/blackusb on >/dev/null 2>&1
 	sudo rm -rf blackusb >/dev/null 2>&1
 	sudo crontab -l | { cat; echo "@reboot /etc/init.d/blackusb on"; } | sudo crontab -
 	echo OK
