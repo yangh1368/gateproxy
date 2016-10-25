@@ -5,7 +5,43 @@
 # HowTO: https://goo.gl/ZT4LTi                                                      #
 # Install: git clone https://github.com/maravento/gateproxy.git                     #
 # chmod +x gateproxy/gateproxy.sh && gateproxy/gateproxy.sh                         #
+# Available Eng-Spa                                                                 #
 #####################################################################################
+#
+# Language spa-eng
+#
+lm1=("Usuarios Avanzados" "Advanced Users")
+lm2=("Por favor responda" "Please Answer")
+lm3=("Introduzca" "Enter")
+lm4=("Ha introducido correctamente" "You have entered correctly")
+lm5=("Desea cambiar" "Do you want to change")
+lm6=("Ha introducido" "You have entered"
+lm7=("Desea instalar" "Do you want to install")
+lm8=("Puede elegir cada uno" "You can choose each")
+lm9=("para activar" "to activate")
+lm10=("ya esta instalado" "is already installed")
+#
+cm1=("Asegurese de tener instalado Ubuntu 16.04.x LTS x64" "Be sure to have installed Ubuntu LTS x64 16.04.x")
+cm2=("Formato de Net interfaces Correcto" "Net Interfaces Format Correct")
+cm3=("Formato de Net Interfaces Incorrecto" "Net Interfaces Format Incorrect")
+cm4=("Lista de Net Interfaces detectadas con direcciones MACs" "List of Net Interfaces detected with MACs addresses")
+cm5=("Ha terminado la configuracion de Net Interfaces" "You have finished setting up your Net Interfaces")
+cm6=("Reinicie su servidor y ejecute nuevamente gateproxy.sh" "Restart your server and run again gateproxy.sh")
+cm7=("Gateproxy trabaja con NIC-Ethernet. Si eligió una interfaz WiFi" "Gateproxy works with Ethernet NIC. If you chose a WiFi interface")
+cm8=("edite /etc/udev/rules.d/10-network.rules antes de reiniciar su" "edit /etc/udev/rules.d/10-network.rules before restarting your")
+cm9=("servidor, y en KERNEL de interfaz WiFi, reemplace: en* por wl*" "server, and KERNEL WiFi interface, replace: in * for wl *")
+cm10=("Bienvenido a la instalacion de GateProxy Server (v1.0 Alpha)" "Welcome to installing GateProxy Server (v1.0 Alpha)")
+cm11=("Este script puede dañar su sistema si se usa incorrectamente" "This script can damage your system if used incorrectly")
+cm12=("Para mayor información, visite gateproxy.com y lea el HowTO" "For more information, visit gateproxy.com and read the HowTO")
+cm13=("Presione ENTER para iniciar o CTRL+C para cancelar" "Press ENTER to start or CTRL + C to cancel")
+cm14=("Verifique su conexion a internet y reinicie el script" "Check your internet connection and restart the script")
+cm15=("y activar carpeta compartida" "and enabled shared folder")
+cm16=("con papelera de reciclaje y auditoria" "with recycle bin and audit")
+cm17=("Desea activar la proteccion de puertos usb via udev" "Do you want to activate the protection of USB ports via udev")
+
+test "${LANG:0:2}" == "es"
+es=$?
+
 clear
 gp=~/gateproxy
 # CHECKING SO
@@ -13,13 +49,13 @@ function is_xenial(){
 is_xenial=`lsb_release -sc | grep xenial`
 	if [ "$is_xenial" ]; then
     	echo
-	echo "Sistema Operativo Correcto"
+	echo "SO OK"
   else
 	clear
 	echo
 	echo
-	echo "Sistema Operativo Incorrecto. Instalacion abortada"
-	echo "Asegurese de tener instalado Ubuntu 16.04.x LTS x64"
+	echo "SO Incorrect. Instalacion Abortada-Installation Aborted"
+	echo "${cm1[${es}]}"
 	echo
 	exit
 fi
@@ -27,17 +63,17 @@ fi
 is_xenial
 
 # CHECKING INTERFACES
-# DIRECCION MAC DE LA ETH PUBLICA
+# MAC ADDRESS/ETH PUBLIC
 function is_mac_public(){
-	read -p "Introduzca la MAC que usará para eth0 (Internet): " MAC
+	read -p "${lm3[${es}]} MAC eth0 (Internet): " MAC
 	if [ "$MAC" ]; then
 	sed -i "s/00:00:00:00:00:00/$MAC/g" $gp/10-network.rules
    fi
 }
 
-# DIRECCION MAC DE LA ETH LOCAL
+# MAC ADDRESS/ETH LOCAL
 function is_mac_local(){
-	read -p "Introduzca la MAC que usará para eth1 (Red Local): " MAC
+	read -p "${lm3[${es}]} MAC eth1 (Localnet): " MAC
 	if [ "$MAC" ]; then
 	sed -i "s/11:11:11:11:11:11/$MAC/g" $gp/10-network.rules
    fi
@@ -47,11 +83,11 @@ function is_interfaces(){
 is_interfaces=`ifconfig | grep eth`
 	if [ "$is_interfaces" ]; then
 	echo
-	echo "Formato de Interfaces de Red Correcto"
+	echo "${cm2[${es}]}"
   else
 	echo
-	echo "Formato de Interfaces de Red Incorrecto"
-	echo "Interfaces de red detectadas con sus direcciones MACs:"
+	echo "${cm3[${es}]}"
+	echo "${cm4[${es}]}:"
 	echo
 	ifconfig | grep HW
 	echo
@@ -60,13 +96,13 @@ is_interfaces=`ifconfig | grep eth`
 	sudo cp $gp/10-network.rules /etc/udev/rules.d/10-network.rules
 	clear
 	echo	
-	echo "Ha terminado la configuracion de sus interfaces"
-	echo "Reinicie su servidor y ejecute nuevamente gateproxy.sh"
+	echo "${cm5[${es}]}"
+	echo "${cm6[${es}]}"
 	echo
-	echo "Importante:"
-	echo "Gateproxy trabaja con NIC-Ethernet. Si eligió una interfaz WiFi"
-    	echo "edite /etc/udev/rules.d/10-network.rules antes de reiniciar su"
-	echo "servidor y reemplace en KERNEL en* por wl* en la interfaz WiFi"
+	echo "Importante - Important:"
+	echo "${cm7[${es}]}"
+	echo "${cm8[${es}]}"
+	echo "${cm9[${es}]}"
 	echo
 	exit 
   fi
@@ -75,46 +111,46 @@ is_interfaces
 
 clear
 echo
-echo "  Bienvenido a la instalacion de GateProxy Server (v1.0 Alpha)"
+echo "  ${cm10[${es}]}"
 echo
-echo "  Requisitos Mínimos:"
+echo "  Requisitos Mínimos - Minimum requirements:"
 echo "  GNU/Linux:    Ubuntu 16.04.x LTS x64"
-echo "  Procesador:   Intel compatible 1x GHz"
+echo "  Processor:    Intel compatible 1x GHz"
 echo "  Interfaces:   eth0, eth1"
 echo "  RAM:          4GB"
 echo "  DD:           200 GB"
 echo "  Internet:     High Speed"
-echo "  Desktop:      Mate (opcional)"
-echo "  Dependencias: sudo apt-get -y install git apt dpkg"
+echo "  Desktop:      Mate (optional)"
+echo "  Dependencies: sudo apt-get -y install git apt dpkg"
 echo
 echo
-echo "  Exención de responsabilidad:
-  Este script puede dañar su sistema si se usa incorrectamente.
-  Para mayor información, visite gateproxy.com y lea el HowTO"
+echo "  Exención de responsabilidad - Disclaimer:
+  ${cm11[${es}]}
+  ${cm12[${es}]}"
 echo
 echo
-echo "  Presione ENTER para iniciar o CTRL+C para cancelar";
+echo "  ${cm13[${es}]}";
 read RES
 clear
 echo
-echo "Verificando suma..."
+echo "Checking sum..."
 a=$(md5sum $gp/gateproxy.tar.gz | awk '{print $1}')
 b=$(cat $gp/gateproxy.md5 | awk '{print $1}')
 	if [ "$a" = "$b" ]
   then 
-   	echo "la suma coincide"
+   	echo "sum ok"
    	tar -C gateproxy -xvzf $gp/gateproxy.tar.gz >/dev/null 2>&1 && sleep 2
    	sudo mkdir -p /etc/acl 2>&1
    	sudo cp -rf $gp/acl/* /etc/acl >/dev/null 2>&1 && sleep 2
    	echo OK
   else
-   	echo "la suma no coincide"
-   	echo "Verifique su conexion a internet y reinicie el script"
+   	echo "Bad sum. Abort"
+   	echo "${cm14[${es}]}"
    	rm -rf gateproxy*
 	exit
 fi
 
-# sincronizando hora y backup crontab, source.list
+# sincronizando hora - synchronized time and backup crontab, source.list
 	sudo hwclock -w >/dev/null 2>&1
 	sudo cp /etc/crontab{,.bak} >/dev/null 2>&1
 	sudo crontab /etc/crontab >/dev/null 2>&1
@@ -122,6 +158,7 @@ fi
 	sudo touch /var/log/alert.log
 
 # CAMBIANDO NOMBRE DE SERVIDOR EN LOS ARCHIVOS DE CONFIGURACION
+# CHANGING SERVER NAME IN THE CONFIG FILES
 function is_hostname(){
 	is_name=`echo $HOSTNAME`
 	if [ "$is_name" ]; then
@@ -131,6 +168,7 @@ function is_hostname(){
 is_hostname
 
 # CAMBIANDO NOMBRE DE LA CUENTA DE USUARIO EN LOS ARCHIVOS DE CONFIGURACION
+# CHANGING NAME USER ACCOUNT CONFIG FILES
 function is_username(){
 	is_user=`echo $USER`
 	if [ "$is_user" ]; then
@@ -139,16 +177,17 @@ function is_username(){
 }
 is_username
 
-## CAMBIANDO PARAMETROS DEL SERVIDOR ##
+# CAMBIANDO PARAMETROS DEL SERVIDOR
+# CHANGING PARAMETERS SERVER
 is_ask() {
-    pregunta="$1"
-    respuesta_incorrecta="$2"
+    inquiry="$1"
+    iresponse="$2"
     funcion="$3"
 
     while true; do
-      read -p "$pregunta: " answer
+      read -p "$inquiry: " answer
       case $answer in
-            [Ss]* )
+            [Yy]* )
              	# execute command yes
 		    while true; do
             	answer=`$funcion`
@@ -156,153 +195,152 @@ is_ask() {
             	    echo $answer
             	    	break;
             	 else
-            	    echo "$respuesta_incorrecta"
+            	    echo "$iresponse"
             	 fi
              done;
 			break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
 
 # IP-GATEWAY
 function is_ip(){
-	read -p "Introduzca la nueva IP (Ejemplo: 192.168.0.10): " IP
+	read -p "${lm3[${es}]} IP (e.g. 192.168.0.10): " IP
 	IPNEW=`echo $IP | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$IPNEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.10:$IPNEW:g"  "{}"
-	echo "Ha introducido correctamente la IP $IP"
+	echo "${lm4[${es}]} la IP $IP"
    fi
 }
 
-# MASCARA
+# MASK
 function is_mask1(){
-	read -p "Introduzca la nueva mascara de red (Ejemplo: 255.255.255.0): " MASK1
+	read -p "${lm3[${es}]} Netmask (e.g. 255.255.255.0): " MASK1
 	MASKNEW1=`echo $MASK1 | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$MASKNEW1" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:255.255.255.0:$MASKNEW1:g"  "{}"
-	echo "Ha introducido correctamente la mascara $MASK1"
+	echo "${lm4[${es}]} Netmask $MASK1"
    fi
 }
 
 function is_mask2(){
-	read -p "Introduzca la nueva mascara de subred (Ejemplo: 24): " MASK2
+	read -p "${lm3[${es}]} Subnet-Mask (e.g. 24): " MASK2
 	MASKNEW2=`echo $MASK2 | egrep '[0-9]'`
 	if [ "$MASKNEW2" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:/24:/$MASKNEW2:g"  "{}"
-	echo "Ha introducido correctamente la mascara $MASK2"
+	echo "${lm4[${es}]} Subnet-Mask $MASK2"
    fi
 }
 
 # DNS
 function is_dns1(){
-	read -p "Introduzca el DNS1 (Ejemplo: 8.8.8.8): " DNS1
+	read -p "${lm3[${es}]} DNS1 (e.g. 8.8.8.8): " DNS1
 	DNSNEW1=`echo $DNS1 | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$DNSNEW1" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:8.8.8.8:$DNSNEW1:g"  "{}"
-	echo "Ha introducido correctamente el DNS1 $DNS1"
+	echo "${lm4[${es}]} DNS1 $DNS1"
    fi
 }
 
 function is_dns2(){
-	read -p "Introduzca el DNS2 (Ejemplo: 8.8.4.4): " DNS2
+	read -p "${lm3[${es}]} DNS2 (e.g. 8.8.4.4): " DNS2
 	DNSNEW2=`echo $DNS2 | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$DNSNEW2" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:8.8.4.4:$DNSNEW2:g"  "{}"
-	echo "Ha introducido correctamente DNS2 $DNS2"
+	echo "${lm4[${es}]} DNS2 $DNS2"
    fi
 }
 
 # LOCALNET
 function is_localnet(){
-	read -p "Introduzca el nuevo localnet-network (Ejemplo: 192.168.0.0): " LOCALNET
+	read -p "${lm3[${es}]} Localnet-Network (e.g. 192.168.0.0): " LOCALNET
 	LOCALNETNEW=`echo $LOCALNET | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$LOCALNETNEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.0:$LOCALNETNEW:g"  "{}"
-	echo "Ha introducido correctamente el nuevo localnet-network $LOCALNET"
+	echo "${lm4[${es}]} Localnet-Network $LOCALNET"
    fi
 }
 
 # BROADCAST
 function is_broadcast(){
-	read -p "Introduzca el nuevo broadcast (Ejemplo: 192.168.0.255): " BROADCAST
+	read -p "${lm3[${es}]} Broadcast (e.g. 192.168.0.255): " BROADCAST
 	BROADCASTNEW=`echo $BROADCAST | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$BROADCASTNEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.255:$BROADCASTNEW:g"  "{}"
-	echo "Ha introducido correctamente el broadcast $BROADCAST"
+	echo "${lm4[${es}]} Broadcast $BROADCAST"
    fi
 }
 
-# INTERFAZ RED LOCAL
+# INTERFACE LOCALNET
 function is_eth(){
-	read -p "Introduzca la nueva interfaz DHCP para la Red Local (Ejemplo: 1): " ETH
+	read -p "${lm3[${es}]} DHCP Localnet Interface (e.g. 1): " ETH
 	ETHNEW=`echo $ETH | egrep '[0-9]'` # '^([0-9])$'`
 	if [ "$ETHNEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:eth1:eth$ETHNEW:g"  "{}"
-	echo "Ha introducido correctamente la interfaz DHCP $ETH"
+	echo "${lm4[${es}]} DHCP Localnet Interface $ETH"
    fi
 }
 
-# RANGO DHCP
+# DHCP RANGE
 function is_rangeini(){
-	read -p "Introduzca la ip inicial rango-dhcp (Ejemplo: 192.168.0.100): " RANGEINI
+	read -p "${lm3[${es}]} DHCP-RANGE-INI (e.g. 192.168.0.100): " RANGEINI
 	RANGEININEW=`echo $RANGEINI | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
 	if [ "$RANGEININEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.100:$RANGEININEW:g"  "{}"
-	echo "Ha introducido correctamente la ip $RANGEINI"
+	echo "${lm4[${es}]} DHCP-RANGE-INI $RANGEINI"
    fi
 }
 
-function is_rangefin(){
-	read -p "Introduzca la ip final rango-dhcp (Ejemplo: 192.168.0.250): " RANGEFIN
-	RANGEFINNEW=`echo $RANGEFIN | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
-	if [ "$RANGEFINNEW" ]; then
-	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.250:$RANGEFINNEW:g"  "{}"
-	echo "Ha introducido correctamente la ip $RANGEFIN"
+function is_rangeend(){
+	read -p "${lm3[${es}]} DHCP-RANGE-END (e.g. 192.168.0.250): " RANGEEND
+	RANGEENDNEW=`echo $RANGEEND | egrep '^(([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]{1,2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'`
+	if [ "$RANGEENDNEW" ]; then
+	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:192.168.0.250:$RANGEENDNEW:g"  "{}"
+	echo "${lm4[${es}]} DHCP-RANGE-END $RANGEEND"
    fi
 }
 
 clear
 echo
 while true; do
-	read -p "Parametros del servidor:
-ip 192.168.0.10, mask 255.255.255.0 /24, DNS 8.8.8.8,8.8.4.4, eth1
-localnet 192.168.0.0, broadcast 192.168.0.255, rango-dhcp 100-250
-Desea cambiar estos parametros? (s/n)" answer
+	read -p "Parametros del servidor - Server settings:
+IP 192.168.0.10, Mask 255.255.255.0 /24, DNS 8.8.8.8,8.8.4.4, eth1
+Localnet 192.168.0.0, Broadcast 192.168.0.255, DHCP-Range 100-250
+Desea modificarlos? - Do you want to change it? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
-	is_ask "Desea cambiar la IP 192.168.0.10? (s/n)" "Ha introducido una IP incorrecta" is_ip
-	is_ask "Desea cambiar la mascara 255.255.255.0? (s/n)" "Ha introducido una mascara incorrecta" is_mask1
-	is_ask "Desea cambiar la mascara /24? (s/n)" "Ha introducido una mascara incorrecta" is_mask2
-	is_ask "Desea cambiar el DNS1 8.8.8.8? (s/n)" "Ha introducido DNS1 incorrecto" is_dns1
-	is_ask "Desea cambiar el DNS2 8.8.4.4? (s/n)" "Ha introducido DNS2 incorrecto" is_dns2
-	is_ask "Desea cambiar el localnet 192.168.0.0? (s/n)" "Ha introducido localnet incorrecto" is_localnet
-	is_ask "Desea cambiar el broadcast 192.168.0.255? (s/n)" "Ha introducido un broadcast incorrecto" is_broadcast
-	is_ask "Desea cambiar interfaz DHCP para la Red Local eth1? (s/n)" "Ha introducido una interfaz incorrecta" is_eth
-	is_ask "Desea cambiar el rango DHCP inicial 192.168.0.100? (s/n)" "Ha introducido una ip incorrecta" is_rangeini
-	is_ask "Desea cambiar el rango DHCP final 192.168.0.250? (s/n)" "Ha introducido una ip incorrecta" is_rangefin
+	is_ask "${lm5[${es}]} IP 192.168.0.10? (y/n)" "${lm6[${es}]} IP incorrect" is_ip
+	is_ask "${lm5[${es}]} Mask 255.255.255.0? (y/n)" "${lm6[${es}]} Mask incorrect" is_mask1
+	is_ask "${lm5[${es}]} Sub-Mask /24? (y/n)" "${lm6[${es}]} Sub-Mask incorrect" is_mask2
+	is_ask "${lm5[${es}]} DNS1 8.8.8.8? (y/n)" "${lm6[${es}]} DNS1 incorrect" is_dns1
+	is_ask "${lm5[${es}]} DNS2 8.8.4.4? (y/n)" "${lm6[${es}]} DNS2 incorrect" is_dns2
+	is_ask "${lm5[${es}]} Localnet 192.168.0.0? (y/n)" "${lm6[${es}]} Localnet incorrect" is_localnet
+	is_ask "${lm5[${es}]} Broadcast 192.168.0.255? (y/n)" "${lm6[${es}]} Broadcast incorrect" is_broadcast
+	is_ask "${lm5[${es}]} DHCP Localnet Interface? (y/n)" "${lm6[${es}]} Interface incorrect" is_eth
+	is_ask "${lm5[${es}]} DHCP-RANGE-INI 192.168.0.100? (y/n)" "${lm6[${es}]} IP incorrect" is_rangeini
+	is_ask "${lm5[${es}]} DHCP-RANGE-END 192.168.0.250? (y/n)" "${lm6[${es}]} IP incorrect" is_rangeend
 	echo OK
 			break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 
-# LOCALEPURGE (IDIOMAS)
+# LOCALEPURGE (LANGUAGES)
 clear
 echo
 while true; do
-	read -p "Se eliminaran todos los idiomas, menos espanol-ingles
-Para agregar mas idiomas, edite /etc/locale.nopurge
-Desea instalar localepurge? (s/n)" answer
+	read -p "${lm7[${es}]} LocalePurge (eng-spa)
+(idiomas-languajes /etc/locale.nopurge)? (y/n)" answer
     	case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	sudo cp -f $gp/conf/locale.nopurge /etc
 	sudo apt -f install && sudo apt-get -y install localepurge && sudo apt -f install
@@ -312,29 +350,29 @@ Desea instalar localepurge? (s/n)" answer
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 
 clear
 echo
-echo "Eliminando servicios no esenciales..."
+echo "Eliminando servicios no esenciales - Deleting non-essential services..."
 	gsettings set com.canonical.Unity.Lenses disabled-scopes "['more_suggestions-amazon.scope', 'more_suggestions-u1ms.scope', 'more_suggestions-populartracks.scope', 'music-musicstore.scope', 'more_suggestions-ebay.scope', 'more_suggestions-ubuntushop.scope', 'more_suggestions-skimlinks.scope']" && sleep 1 && gsettings set com.canonical.desktop.interface scrollbar-mode normal >/dev/null 2>&1
 	sudo update-desktop-database
 	echo OK
-# LIMPIEZA Y ACTUALIZACION
+# CLEAN AND UPDATE
 updateandclean(){
 clear
 echo
-echo "Su sistema se esta actualizando..."
+echo "Su sistema se esta actualizando - Your system is being updated..."
 	sudo apt update && sleep 1 && sudo apt -y upgrade && sudo apt -y dist-upgrade && sleep 1 && sudo apt install --fix-missing -y && sleep 1 && sudo apt -f install && sudo fc-cache && sleep 1 && sudo sync && sleep 1 && sudo sysctl -w vm.drop_caches=3 vm.swappiness=20 && sleep 1 && sudo apt -y autoremove && sleep 1 && sudo apt -y autoclean && sleep 1 && sudo apt -y clean && sleep 1 && sudo dpkg --configure -a && sleep 1 && sudo apt -f install
 }
 updateandclean
 
-# MODULOS ESENCIALES
+# ESSENTIAL PACK
 clear
 echo
-echo "Instalando Modulos Esenciales..."
+echo "Essential Pack setup..."
 echo
 	# Google Chrome http://www.google.com/linuxrepositories/  .gnupg/gpg.conf
 	#wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -363,7 +401,7 @@ updateandclean
 clear
 echo
 function is_servers(){
-	echo "Instalando Servidores Apache2, DHCP, Squid, PHP7..."
+	echo "Apache2, DHCP, Squid, PHP7 setup..."
 	sudo apt -f install && sudo apt -y install apache2 apache2-doc apache2-utils apache2-dev apache2-suexec-pristine libaprutil1 libaprutil1-dev isc-dhcp-server && sudo apt -f install
 	sudo cp -f /etc/apache2/apache2.conf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/apache/apache2.conf /etc/apache2/apache2.conf
@@ -389,14 +427,14 @@ updateandclean
 # PROXY
 clear
 echo
-echo "Activacion del Proxy..."
+echo "Activacion del Proxy - Activation Proxy..."
 echo
 function is_port(){
-	read -p "Introduzca el nuevo puerto del proxy (Ejemplo: 3128): " PORT
+	read -p "${lm3[${es}]} Proxy Port (e.g. 3128): " PORT
 	PORTNEW=`echo $PORT | egrep '[1-9]'`
 	if [ "$PORTNEW" ]; then
 	find $gp/conf -type f -print0 | xargs -0 -I "{}" sed -i "s:3128:$PORTNEW:g"  "{}"
-	echo "Ha introducido correctamente el puerto del proxy $PORT"
+	echo "${lm4[${es}]} Proxy Port $PORT"
    fi
 }
 
@@ -420,17 +458,17 @@ function is_proxy(){
 	sed -i '/WPAD-PAC/r $gp/conf/proxy/iptwpad.txt' $gp/conf/scripts/iptables.sh
 	sed -i '/CACHEPEER/r $gp/conf/proxy/cpproxy.txt' $gp/conf/squid/squid.conf
 	echo OK
-	echo "Configure la url de autoconfiguracion del proxy Ej: http://192.168.0.10:8000/proxy.pac"
+	echo "WPAD-PAC: http://192.168.0.10:8000/proxy.pac"
 }
 
 while true; do
-	read -p "Configuracion del Proxy Squid y Firewall Iptables
-Importante: Se recomienda Proxy No-Transparente (n)
+	read -p "Proxy Squid - Firewall Iptables
+Recommend: Proxy No-Transparent (n)
 
-Seleccione s para activar Proxy Transparente (NAT 8080) y filtrado 443
-Seleccione n para activar Proxy No-Transparente (3128) y WPAD-PAC (s/n)" answer
+ Y ${lm9[${es}]} Transparent Proxy (NAT 8080)-443 port filtering
+ N ${lm9[${es}]} No-Transparent Proxy (3128)-WPAD-PAC (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	echo	
 	is_intercept
@@ -439,12 +477,12 @@ Seleccione n para activar Proxy No-Transparente (3128) y WPAD-PAC (s/n)" answer
           [Nn]* )
 		# execute command no
 	echo
-	is_ask "Desea cambiar el puerto del proxy 3128? (s/n)" "Ha introducido un puerto incorrecto" is_port
+	is_ask "${lm5[${es}]} Proxy Port 3128? (y/n)" "${lm6[${es}]} Proxy Port incorrect" is_port
 	echo
 	is_proxy
 	echo OK
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 
@@ -452,9 +490,9 @@ done
 clear
 echo
 while true; do
-	read -p "Desea instalar las fuentes Microsoft ttf-mscorefonts? (s/n)" answer
+	read -p "${lm7[${es}]} Microsoft ttf-mscorefonts? (y/n)" answer
     	case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	sudo chmod 777 /var/lib/update-notifier/package-data-downloads/partial
 	sudo apt-get -y install ttf-mscorefonts-installer
@@ -463,15 +501,15 @@ while true; do
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 
-# REPORTES, LOGS Y MONITOREO
+# REPORTS, LOGS AND MONITORING
 clear
 echo
 function is_top(){
-	echo "Instalando Top Family (Htop, Apachetop, iotop, Ntop-ng), nethogs y nload"
+	echo "Top Family (Htop, Apachetop, iotop, Ntop-ng), nethogs, nload setup..."
 	sudo apt -f install && sudo apt -y install nload nethogs htop apachetop iotop libpcap-dev libglib2.0-dev libgeoip-dev redis-server geoip-database ruby-redis ntopng ntopng-data && sudo apt -f install
 	#sudo chown root:root /var/lib/redis >/dev/null 2>&1
 	sudo cp -f $gp/conf/monitor/geoip.sh /etc/init.d
@@ -488,7 +526,7 @@ function is_top(){
 	else
 	echo -e "\n"
 	service ntopng start
-	echo "<--| Ntopng fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Ntopng start $date |-->" >> /var/log/alert.log
 	fi
 	date=`date +%d/%m/%Y" "%H:%M:%S`
 	#
@@ -497,27 +535,27 @@ function is_top(){
 	else
 	echo -e "\n"
 	service redis-server start
-	echo "<--| redis-server fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| redis-server start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceda al reporte Ntop-ng en: http://localhost:3000 user: admin pass: admin"
+	echo "Ntop-ng: http://localhost:3000 user: admin pass: admin"
 	echo
 }
 
 function is_sqstat(){
-	echo "Instalando Reportes SQSTAT..."
+	echo "SQSTAT setup..."
 	sudo tar -xf $gp/conf/monitor/sqstat-1.20.tar.gz
 	sudo mkdir -p /var/www/html/sqstat
 	sudo cp -f -R sqstat-1.20/* /var/www/html/sqstat/
 	sudo cp -f $gp/conf/monitor/config.inc.php /var/www/html/sqstat/config.inc.php
 	sudo rm -R sqstat-1.20
 	echo OK
-	echo "Acceda al reporte Sqstat en: http://localhost/sqstat/sqstat.php"
+	echo "Sqstat: http://localhost/sqstat/sqstat.php"
 	echo
 }
 
 function is_sarg(){
-	echo "Instalando Reportes SARG..."
+	echo "SARG setup..."
 	sudo apt -f install && sudo apt -y install sarg && sudo apt -f install
 	sudo mkdir -p /var/www/html/squid-reports
 	sudo cp -f /etc/sarg/sarg.conf{,.bak} >/dev/null 2>&1
@@ -530,13 +568,13 @@ function is_sarg(){
 	sudo crontab -l | { cat; echo "@daily sarg -l /var/log/squid/access.log -o /var/www/html/squid-reports >/dev/null 2>&1"; } | sudo crontab -
 	sudo crontab -l | { cat; echo '@monthly find /var/www/html/squid-reports -name "2*" -mtime +30 -type d -exec rm -rf "{}" \; >/dev/null'; } | sudo crontab -
 	echo OK
-	echo "Acceda al reporte Sarg en: http://192.168.0.10:11500"
-	echo "Agregar nombres de usuarios en: /etc/sarg/usertab (192.168.0.10 GATEPROXY)"
+	echo "Sarg: http://192.168.0.10:11500"
+	echo "Usernames: /etc/sarg/usertab (e.g. 192.168.0.10 GATEPROXY)"
 	echo
 }
 
 function is_iptraf(){
-	echo "Instalando Iptraf..."
+	echo "Iptraf setup..."
 	sudo apt -f install && sudo apt -y install iptraf && sudo apt -f install
 	sudo mkdir -p /var/www/html/iptrafaudit
 	sudo touch /var/www/html/iptrafaudit/iptrafaudit.log
@@ -554,15 +592,15 @@ function is_iptraf(){
 	killall iptraf
 	iptraf -i all -L /var/log/iptraf/ip_traffic-1.log -B
 	service apache2 restart
-	echo "<--| Iptraf fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Iptraf start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceda al reporte Iptraf en: http://192.168.0.10:11300/iptrafaudit.log"
+	echo "Iptraf: http://192.168.0.10:11300/iptrafaudit.log"
 	echo
 }
 
 function is_monitor(){
-	echo "Instalando Webalizer y Monitorix..."
+	echo "Webalizer, Monitorix setup..."
 	sudo sh -c 'echo "deb http://apt.izzysoft.de/ubuntu generic universe" >> /etc/apt/sources.list' && wget -q http://apt.izzysoft.de/izzysoft.asc -O- | sudo apt-key add -
 	sudo apt update && sudo apt -f install && sudo apt -y install webalizer monitorix && sudo apt -f install
 	sudo mkdir -p /var/www/html/webalizer
@@ -572,7 +610,7 @@ function is_monitor(){
 	sudo cp -f $gp/conf/monitor/webalizer.conf /etc/webalizer/webalizer.conf
 	sudo cp -f /etc/monitorix/monitorix.conf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/monitor/monitorix.conf /etc/monitorix/monitorix.conf
-	echo "Introduzca su contrasena para Monitorix..."
+	echo "${lm3[${es}]} Monitorix password..."
 	sudo htpasswd -d -c /var/lib/monitorix/htpasswd $USER
 	sed -i '/MONITORIX/r $gp/conf/monitor/iptmonitorix.txt' $gp/conf/scripts/iptables.sh
 	echo '# Monitorix Service
@@ -582,15 +620,15 @@ function is_monitor(){
 	else
 	echo -e "\n"
 	service monitorix start && service apache2 restart
-	echo "<--| Monitorix fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Monitorix start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceda al reporte Monitorix en: http://localhost:8081/monitorix/"
+	echo "Monitorix: http://localhost:8081/monitorix/"
 	echo
 }
 
 function is_bandwidthd(){
-	echo "Instalando Bandwidthd Monitor..."
+	echo "Bandwidthd Monitor setup..."
 	sudo rm -rf /var/www/html/bandwidthd /etc/bandwidthd /var/lib/bandwidthd >/dev/null 2>&1
 	sudo mkdir -p /var/www/html/bandwidthd
 	sudo apt -y install bandwidthd 
@@ -608,23 +646,23 @@ function is_bandwidthd(){
 	else
 	echo -e "\n"
 	/etc/init.d/bandwidthd start && service apache2 restart
-	echo "<--| Bandwidthd fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Bandwidthd start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceda al reporte Bandwidthd en: http://192.168.0.10:11400"
+	echo "Bandwidthd: http://192.168.0.10:11400"
 	echo
 }
 
 function is_speedtest(){
-	echo "Instalando Speedtest..."
+	echo "Speedtest setup..."
 	sudo apt -y install python-pip && sudo apt -f install && sudo pip install --upgrade pip && sudo pip install speedtest-cli
 	echo OK
-	echo "Test de ancho de banda, abra el terminal y escriba: speedtest"
+	echo "Test console: speedtest"
 	echo
 }
 
 function is_netdata(){
-	echo "Instalando Netdata..."
+	echo "Netdata setup..."
 	sudo apt -y install zlib1g-dev uuid-dev libmnl-dev autogen pkg-config jq nodejs && sudo apt -f install
 	git clone https://github.com/firehol/netdata.git --depth=1
 	cd netdata
@@ -636,14 +674,14 @@ function is_netdata(){
 	else
 	echo -e "\n"
 	/usr/sbin/netdata
-	echo "<--| NetData fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| NetData start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceda al Netdata en: http://localhost:19999/"
+	echo "Netdata: http://localhost:19999/"
 }
 
 function is_logs(){
-	echo "Instalando Logwatch, Logrotate, Ulogd2, logtail, Awstats..."
+	echo "Logwatch, Logrotate, Ulogd2, logtail, Awstats setup..."
 	sudo apt -y install logwatch logrotate ulogd2 acct awstats logtail && sudo apt -f install
 	sudo usermod -a -G ulog $USER
 	sudo mv /etc/cron.daily/00logwatch /etc/cron.weekly/
@@ -661,11 +699,11 @@ function is_logs(){
 }
 
 while true; do
-    read -p "Desea instalar los Modulos de Reportes, Logs y Monitoreo? (recomendado)
+    read -p "${lm7[${es}]} Pack Reports, Logs, Monitoring? (recommended)
 Sqstat, NetData, Iptraf, nethogs, Webalizer, Monitorix, Bandwidthd, Speedtest,
-nload, Sarg, Top Family, Logwatch, Logrotate, Ulogd2, logtail, Awstats (s/n)" answer
+nload, Sarg, Top Family, Logwatch, Logrotate, Ulogd2, logtail, Awstats (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	is_top
 	is_sqstat
@@ -681,11 +719,11 @@ nload, Sarg, Top Family, Logwatch, Logrotate, Ulogd2, logtail, Awstats (s/n)" an
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 
-# MODULOS OPCIONALES
+# OPCIONAL PACK
 clear
 echo
 
@@ -693,15 +731,15 @@ function is_mate(){
 # Mate Desktop
 clear
 echo
-# MATE DESKTOP
+
 is_mate=`which mate-panel`
     if [ "$is_mate" ]; then
-        echo "Mate Desktop ya esta instalado"
+        echo "Mate Desktop ${lm10[${es}]}"
     else
         while true; do
-        read -p "Desea instalar Mate Desktop? (s/n)" answer
+        read -p "${lm7[${es}]} Mate Desktop? (y/n)" answer
     	case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	sudo add-apt-repository ppa:ubuntu-mate-dev/$(lsb_release -sc)-mate --yes
 	sudo apt update && sudo apt -y dist-upgrade && sudo apt -f install
@@ -712,7 +750,7 @@ is_mate=`which mate-panel`
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 fi
@@ -723,11 +761,11 @@ function is_vbox(){
 clear
 echo
 while true; do
-	read -p "Desea instalar Virtualbox Pack? (s/n)" answer
+	read -p "${lm7[${es}]} Virtualbox Pack? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
-	echo "Instalando Virtualbox Pack..."
+	echo "Virtualbox Pack setup..."
  	echo "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 	vboxmanage list runningvms >/dev/null 2>&1 | sed -r 's/.*\{(.*)\}/\1/' | xargs -L1 -I {} VBoxManage controlvm {} savestate >/dev/null 2>&1
@@ -742,12 +780,12 @@ while true; do
 	cd
 	#sudo adduser $USER vboxusers
 	sudo usermod -a -G vboxusers $USER
-	echo "verifique con groups $USER"
+	echo "verify groups $USER"
 	sudo cp -f $gp/conf/virtual/vm /etc/init.d/vm
 	sudo chown root:root /etc/init.d/vm
 	sudo chmod +x /etc/init.d/vm
 	sudo update-rc.d vm defaults 99 01
-	echo "Instalando PHPVirtualbox..."
+	echo "PHPVirtualbox setup..."
 	sudo mkdir -p /var/www/html/phpvirtualbox
 	cd /tmp/
 	sudo wget -c --retry-connrefused -t 0 http://downloads.sourceforge.net/project/phpvirtualbox/phpvirtualbox-5.0-5.zip
@@ -763,13 +801,13 @@ while true; do
 	sed -i '/PHPVIRTUALBOX/r $gp/conf/virtual/phpvboxport.txt' $gp/conf/apache/ports.conf
 	sed -i '/VBOXWEBSERV/r $gp/conf/virtual/vboxweb.txt' $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceso Local a las VMs: http://192.168.0.10:11600"
+	echo "VMs: http://192.168.0.10:11600"
 	echo
 		break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -779,9 +817,9 @@ function is_gdiskdump(){
 clear
 echo
 while true; do
-	read -p "Desea instalar gdiskdump (Disk Clone)? (s/n)" answer
+	read -p "${lm7[${es}]} gdiskdump (Disk Clone)? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	sudo rm gdiskdump*.deb >/dev/null 2>&1 && sudo apt -y purge gdiskdump >/dev/null 2>&1
 	wget -c --retry-connrefused -t 0 https://launchpad.net/gdiskdump/trunk/0.8/+download/gdiskdump_0.8-1_all.deb
@@ -791,7 +829,7 @@ while true; do
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -801,14 +839,14 @@ function is_remote(){
 clear
 echo
 while true; do
-	read -p "Desea instalar Remote Desktop (Teamviewer y Remmina)? (s/n)" answer
+	read -p "${lm7[${es}]} Remote Desktop (Teamviewer, Remmina)? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
-	echo "Instalando Remmina..."
+	echo "Remmina setup..."
 	sudo apt -y install remmina && sudo apt -f install
 	echo OK
-	echo "Instalando Teamviewer..."
+	echo "Teamviewer setup..."
 	sudo apt-get -y purge teamviewer* >/dev/null 2>&1
 	sudo dpkg -r teamviewer:i386 >/dev/null 2>&1
 	sudo rm -rf ~\.local\share\TeamViewer* >/dev/null 2>&1
@@ -824,14 +862,14 @@ while true; do
 	else
 	echo -e "\n"
 	teamviewer --daemon start
-	echo "<--| Teamviewer fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Teamviewer start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
 		break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -841,24 +879,24 @@ function is_vnc(){
 clear
 echo
 while true; do
-	read -p "Desea instalar VNC server (Vino)? (s/n)" answer
+	read -p "${lm7[${es}]} VNC server (Vino)? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	echo
-	echo "Instalando VNC Vino-Server..."
+	echo "VNC Vino-Server setup..."
 	sudo apt -y install vino && sudo apt -f install
 	vino-preferences
 	sudo cp $gp/conf/vnc/vino-server.sh /etc/init.d/vino-server.sh
 	sudo chown root:root /etc/init.d/vino-server.sh
 	sudo chmod +x /etc/init.d/vino-server.sh
 	echo OK
-	echo "Inicie el servidor VNC manualmente con: sudo /etc/init.d/vnc-server.sh start"
+	echo "VNC: sudo /etc/init.d/vnc-server.sh start"
 		break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -868,10 +906,10 @@ function is_samba(){
 clear
 echo
 while true; do
-	read -p "Desea instalar samba y activar carpeta compartida
-con papelera de reciclaje y auditoria? (s/n)" answer
+	read -p "${lm7[${es}]} Samba ${cm15[${es}]}
+${cm16[${es}]}? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
             	# execute command yes
 	is_user=`echo $USER`
 	if [ "$is_user" ]; then
@@ -897,7 +935,7 @@ con papelera de reciclaje y auditoria? (s/n)" answer
 	echo -e "\n"
 	service smbd start
 	systemctl restart smbd && systemctl restart nmbd
-	echo "<--| Samba (smbd) fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Samba (smbd) start $date |-->" >> /var/log/alert.log
 	fi
 	#
 	# Samba Service Nmbd
@@ -907,29 +945,29 @@ con papelera de reciclaje y auditoria? (s/n)" answer
 	else
 	echo -e "\n"
 	systemctl restart smbd && systemctl restart nmbd
-	echo "<--| Samba (nmbd) fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Samba (nmbd) start $date |-->" >> /var/log/alert.log
 	fi
 	'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceda al reporte samba en http://192.168.0.10:11200/smbdaudit.log"	
+	echo "Samba Audit: http://192.168.0.10:11200/smbdaudit.log"	
 		break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
 
 while true; do
-	read -p "Instalacion de Modulos Opcionales:
+	read -p "Optional Pack:
 
 Mate Desktop, Virtualbox Pack, gdiskdump, Samba,
 Vino server, Remote Desktop (Teamviewer-Remmina)
 
-Desea instalar esos Modulos? (puede elegir cada uno) (s/n)" answer
+${lm7[${es}]} (${lm8[${es}]})? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	is_mate
 	is_vbox
@@ -942,23 +980,23 @@ Desea instalar esos Modulos? (puede elegir cada uno) (s/n)" answer
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 
-# MODULOS SE SEGURIDAD AVANZADOS
+# SECURITY PACK
 
 function is_security(){
 clear
 echo
 while true; do
-   read -p "Desea instalar el Pack de Seguridad (Usuarios Avanzados)?
-Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (s/n)" answer
+   read -p "${lm7[${es}]} Security Pack (${lm1[${es}]})?
+Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	echo
-	echo "Instalando Fail2Ban..."
+	echo "Fail2Ban setup..."
 	sudo apt -f install && sudo apt -y install fail2ban python-pyinotify python-gamin && sudo apt -f install
 	sudo cp -f /etc/fail2ban/jail.conf{,.bak} >/dev/null 2>&1
 	sudo cp -f /proc/sys/fs/inotify/max_user_instances{,.bak} >/dev/null 2>&1
@@ -972,12 +1010,12 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (s/n)" answer
 	echo -e "\n"
 	rm -rf /var/run/fail2ban/fail2ban.sock >/dev/null 2>&1
 	service fail2ban start && service rsyslog restart
-	echo "<--| Fail2ban fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Fail2ban start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Acceda al reporte fail2ban en: /var/log/fail2ban.log"
+	echo "Fail2ban report: /var/log/fail2ban.log"
 	echo
-	echo "Instalando DDOS Deflate..."
+	echo "DDOS Deflate setup..."
 	sudo mkdir -p /usr/local/ddos
 	sudo chown root:root /usr/local/ddos
 	sudo cp -fR $gp/conf/ddos/* /usr/local/ddos
@@ -991,24 +1029,24 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (s/n)" answer
 	echo "Para desinstalar: /usr/local/ddos/uninstall.sh"
 	echo "Para ver las ips baneadas: /usr/local/ddos/ddos.log"
 	echo
-	echo "Instalado Mod Security..."
+	echo "Mod Security setup..."
 	sudo apt -f install && sudo apt -y install libxml2-dev liblua5.1-0 lua5.1 libxml2 libcurl3 libcurl3-dev libxml2-utils libapache2-mod-evasive libapache2-modsecurity libapache2-mod-security2 modsecurity-crs && sudo dpkg --configure -a && sudo apt -f install
 	sudo ln -sf /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/libxml2.so.2 >/dev/null 2>&1
 	echo "Apache hardening..."
 	sudo cp -f /etc/apache2/conf-enabled/security.conf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/apache/security.conf /etc/apache2/conf-enabled/security.conf
 	echo OK
-	echo "Configure headers..."
+	echo "Headers setup..."
 	sudo ln -s /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/headers.load
 	echo "Enable mod_unique_id, rewrite and expires modules..."
 	sudo a2enmod unique_id && sudo a2enmod rewrite && sudo a2enmod expires && sudo service apache2 restart
-	echo "Configure ModSecurity..."
+	echo "ModSecurity setup..."
 	sudo cp -f /etc/modsecurity/modsecurity.conf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/apache/modsecurity.conf /etc/modsecurity/modsecurity.conf
 	# modsecurity anomalies 
 	# sudo cp $gp/conf/apache/modsecurity_crs_21_protocol_anomalies.conf /etc/apache2/mod-security/modsecurity_crs_21_protocol_anomalies.conf
 	echo
-	echo "Instalando OWASP..."
+	echo "OWASP setup..."
 	cd /tmp
 	sudo wget -c --retry-connrefused -t 0 https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/master.zip
 	sudo unzip master.zip
@@ -1028,16 +1066,16 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (s/n)" answer
 	sudo ln -s /etc/apache2/mods-available/evasive.conf /etc/apache2/mods-enabled/evasive.conf >/dev/null 2>&1
 	sudo cp -f /etc/apache2/mods-available/mod-evasive.conf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/apache/mod-evasive.conf /etc/apache2/mods-available/mod-evasive.conf
-	echo "Reiniciando servicios y verificando..."
+	echo "Reload services and check..."
 	sudo a2enmod headers && sudo a2enmod evasive && sudo a2enmod security2 && sudo service apache2 restart
 	sudo apachectl -M | grep security2
 	sudo apachectl -M | grep evasive
 	sudo apache2ctl configtest
-	echo "Mensaje Correcto: security2_module (shared),evasive20_module (shared),Syntax OK"
+	echo "Verify: security2_module (shared),evasive20_module (shared),Syntax OK"
 	echo OK
-	echo "Verifique errores y falsos positivos con: tail /var/log/apache2/error.log"
+	echo "Verify: tail /var/log/apache2/error.log"
 	echo
-	echo "Instalando Rootkit checkers..."
+	echo "Rootkit checkers setup..."
 	sudo apt -f install && sudo apt -y install rkhunter chkrootkit && sudo apt -f install
 	sudo rkhunter --update
 	sudo cp -f /etc/chkrootkit.conf{,.bak} >/dev/null 2>&1
@@ -1045,14 +1083,14 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (s/n)" answer
 	sudo cp -f /etc/default/rkhunter{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/apache/rkhunter /etc/default/rkhunter
 	sudo crontab -l | { cat; echo "@weekly /usr/bin/rkhunter --cronjob --update --quiet"; } | sudo crontab -
-	echo "Verifique el reporte en /var/log/rkhunter.log"
+	echo "Verify: /var/log/rkhunter.log"
 	echo OK
 	echo
 			break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -1064,30 +1102,30 @@ function is_ids(){
 clear
 echo
 while true; do
-   read -p "NIPS/NIDS in Docker (Experimental)
-Desea instalar Snort? (with Barnyard2, PulledPork, Snorby) (s/n)" answer
+   read -p "NIPS/NIDS in Docker (Experimental Pack)
+${lm7[${es}]} Snort? (with Barnyard2, PulledPork, Snorby) (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
-	echo "Instalando Docker..."
+	echo "Docker setup..."
 	sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 	echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list
     	sudo apt update && sudo apt -f install && sudo apt -y install docker-engine
 	sudo usermod -aG docker $(whoami)
 	sudo systemctl enable docker && sudo systemctl start docker
-	echo "Vea comparativa VBox vs Docker en goo.gl/8FfC8O"
+	echo "VBox vs Docker en goo.gl/8FfC8O"
 	echo
-	echo "Instalando Snort, Barnyard2, PulledPork, Snorby..."
+	echo "Snort, Barnyard2, PulledPork, Snorby setup..."
 	git clone https://github.com/amabrouki/snort.git
 	cd snort && sudo docker build -t snort . && cd
 	echo OK
-	echo "Iniciar con: docker run  --privileged -it -p 3000:3000 -d snort"
-	echo "Vea las instrucciones en: https://github.com/amabrouki/snort"
+	echo "Start: docker run  --privileged -it -p 3000:3000 -d snort"
+	echo "HowTO: https://github.com/amabrouki/snort"
 			break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -1097,12 +1135,12 @@ function is_clamav(){
 clear
 echo
 while true; do
-   read -p "Desea instalar ClamAV-AntiVirus (Min 1GB RAM)? (s/n)" answer
+   read -p "${lm7[${es}]} ClamAV-AntiVirus (Min 1GB RAM)? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	echo
-	echo "Instalando ClamAV..."
+	echo "ClamAV setup..."
 	sudo apt -f install && sudo apt -y install clamav clamav-daemon clamav-freshclam && sudo apt -f install && sudo killall freshclam && sudo freshclam -v
     	sudo crontab -l | { cat; echo "@reboot /etc/init.d/clamav-daemon start"; } | sudo crontab -
 	sudo crontab -l | { cat; echo "@reboot /etc/init.d/clamav-freshclam start"; } | sudo crontab -
@@ -1113,7 +1151,7 @@ while true; do
 	else
 	echo -e "\n"
 	service clamav-daemon start
-	echo "<--| Clamav fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Clamav start $date |-->" >> /var/log/alert.log
 	fi
 	#
 	if [[ `ps -A | grep freshclam` != "" ]];then
@@ -1121,17 +1159,17 @@ while true; do
 	else
 	echo -e "\n"
 	service clamav-freshclam start
-	echo "<--| Clamav Update fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| Clamav Update start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
-	echo "Elimine malware con: sudo clamscan --infected --remove --recursive /home"
+	echo "Delete malware: sudo clamscan --infected --remove --recursive /home"
 	echo OK
 	echo
 			break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -1141,10 +1179,10 @@ function is_pass(){
 clear
 echo
 while true; do
-    read -p "Desea instalar pack de cifrado y contrasenas? (Usuarios Avanzados)
-libpam-cracklib, 2-Factor Google Authentication y Veracrypt (s/n)" answer
+    read -p "${lm7[${es}]} Encryption? (${lm1[${es}]})
+libpam-cracklib, 2-Factor Google Authentication, Veracrypt (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	sudo apt -f install && sudo apt -y install libpam-cracklib
 	sudo cp -f /etc/pam.d/common-password{,.bak} >/dev/null 2>&1
@@ -1159,22 +1197,22 @@ libpam-cracklib, 2-Factor Google Authentication y Veracrypt (s/n)" answer
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
 
 function is_audit(){
-# AUDITORIA
+# AUDIT
 clear
 echo
 while true; do
-    read -p "Desea instalar herramientas de Red y Auditoria? (Usuarios Avanzados) 
+    read -p "${lm7[${es}]} Net Tools - Audit? (${lm1[${es}]}) 
 Lynis, Nmap, Zenmap, ArpScan, python-nmap, Pipe Viewer, SSlscan, nbtscan,
 cutter, wireshark, Hping, tcpdump, NetDiscover, My traceroute, Networking,
-toolkit, Byobu, dsniff y wireless-tools (s/n)" answer
+toolkit, Byobu, dsniff, wireless-tools (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	sudo apt -f install && sudo apt -y install cutter wireshark nmap zenmap python-nmap lynis arp-scan hping3 pv net-tools mtr-tiny grc wireless-tools sslscan byobu traceroute nbtscan tcpdump dsniff && sudo apt -f install
 	echo OK
@@ -1182,7 +1220,7 @@ toolkit, Byobu, dsniff y wireless-tools (s/n)" answer
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -1190,17 +1228,17 @@ done
 clear
 echo
 while true; do
-	read -p "Modulo de Seguridad, Cifrado y Auditoria (Usuarios Avanzados):
+	read -p "Encryption, Security and Audit Pack (${lm1[${es}]}):
 
 Fail2Ban, DDOS Deflate, Mod Security, OWASP, Mod evasive, Rootkit checkers,
 Snort with Barnyard2, PulledPork, Snorby in Docker, ClamAV, libpam-cracklib,
 2-Factor GoogleAuth, Veracrypt, Lynis, Nmap, Zenmap, ArpScan, SSLscan, cutter
 python-nmap, Pipe Viewer, nbtscan, wireshark, Hping, tcpdump, dsniff, Byobu
-My traceroute, Networking, toolkit, NetDiscover y wireless-tools
+My traceroute, Networking, toolkit, NetDiscover, wireless-tools
 
-Desea instalar este Modulo? (puede elegir cada uno) (s/n)" answer
+${lm7[${es}]} (${lm8[${es}]})? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	is_security
 	is_ids
@@ -1212,7 +1250,7 @@ Desea instalar este Modulo? (puede elegir cada uno) (s/n)" answer
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 
@@ -1221,12 +1259,12 @@ clear
 echo
 function is_dnsmasq(){
 while true; do
-	read -p "Modulo DNS-LOCAL (Usuarios Avanzados):
-Desea instalar dnsmasq, desactivar resolvconf y restaurar resolv.conf? (s/n)" answer
+	read -p "DNS-LOCAL Pack (${lm1[${es}]}):
+${lm7[${es}]} dnsmasq (deactivate resolvconf - restore resolv.conf? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
-	echo "Instalando DNS-LOCAL dnsmasq..."
+	echo "DNS-LOCAL dnsmasq setup..."
 	sudo apt -f install && sudo apt -y install dnsmasq && sudo apt -f install
 	sudo cp -f /etc/dnsmasq.conf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/dnsmasq/dnsmasq.conf /etc/dnsmasq.conf
@@ -1247,11 +1285,10 @@ Desea instalar dnsmasq, desactivar resolvconf y restaurar resolv.conf? (s/n)" an
 	else
 	echo -e "\n"
 	/etc/init.d/dnsmasq start
-	echo "<--| dnsmasq fue iniciado el $date |-->" >> /var/log/alert.log
+	echo "<--| dnsmasq start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
 	echo
-	echo "Desactivando resolvconf y restaurando resolv.conf..."
 	sudo dpkg-reconfigure resolvconf
 	# sudo resolvconf -u
 	sudo cp -f /etc/NetworkManager/NetworkManager.conf{,.bak}
@@ -1267,7 +1304,7 @@ Desea instalar dnsmasq, desactivar resolvconf y restaurar resolv.conf? (s/n)" an
 	echo OK
 	echo
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -1278,31 +1315,31 @@ function is_vpn(){
 clear
 echo
 while true; do
-   read -p "Desea instalar el modulo VPN (Usuarios Avanzados)
-4nonimizer, FruhoVPN, OpenVPN? (s/n)" answer
+   read -p "${lm7[${es}]} VPN Pack? (${lm1[${es}]})
+4nonimizer, FruhoVPN, OpenVPN (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	echo
 	git clone https://github.com/Hackplayers/4nonimizer.git
 	sudo chmod +x 4nonimizer/4nonimizer && sudo 4nonimizer/4nonimizer install
 	echo OK
-	echo "HowTO https://github.com/Hackplayers/4nonimizer"
+	echo "HowTO: https://github.com/Hackplayers/4nonimizer"
 	echo
-    	echo "Instalando FruhoVPN..."
+    	echo "FruhoVPN setup..."
 	sudo rm fruho*.deb >/dev/null 2>&1 && sudo apt -y purge fruho >/dev/null 2>&1
 	last=$(wget -O - https://github.com/fruho/fruhoapp/releases | grep -Po '/[^"]+download[^"]+' | grep deb | grep amd64 | sort | tail -1)
 	wget https://github.com$last -O fruho.deb
 	sudo dpkg -i fruho.deb && sudo apt-get install -f
 	echo OK
-	echo "Instalando OpenVPN..."
+	echo "OpenVPN setup..."
 	sudo apt -f install && sudo apt -y install openvpn
 	echo
 			break;;
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
@@ -1313,10 +1350,10 @@ clear
 echo
 function is_blackusb(){
 while true; do
-    read -p "Modulo Experimental (Blackusb Project)
-Desea activar la proteccion de puertos usb via udev? (s/n)" answer
+    read -p "Blackusb Project:
+${cm17[${es}]}? (y/n)" answer
 		case $answer in
-          [Ss]* )
+          [Yy]* )
 		# execute command yes
 	git clone https://github.com/maravento/blackusb.git
 	sudo cp -f blackusb/blackusb /etc/init.d >/dev/null 2>&1
@@ -1331,16 +1368,16 @@ Desea activar la proteccion de puertos usb via udev? (s/n)" answer
           	[Nn]* )
 		# execute command no
 			break;;
-        * ) echo; echo "Por favor responda SI (s) o NO (n).";;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
 }
 is_blackusb
 
-# CONFIGURACION
+# CONFIG
 clear
 echo
-echo "Transfiriendo Proyectos Blackweb, Blackip, Whiteip..."
+echo "Download Blackweb, Blackip, Whiteip..."
 git clone https://github.com/maravento/blackweb
 sudo cp -f blackweb/blackweb.sh /etc/init.d >/dev/null 2>&1
 tar -C blackweb -xvzf blackweb/blackweb.tar.gz >/dev/null 2>&1
@@ -1360,7 +1397,7 @@ sudo crontab -l | { cat; echo "@weekly /etc/init.d/blackweb.sh
 @weekly /etc/init.d/whiteip.sh"; } | sudo crontab -
 echo OK
 echo
-echo "Transfiriendo configuraciones..."
+echo "Transferring config..."
 sudo cp -f /etc/squid/squid.conf{,.bak} >/dev/null 2>&1
 sudo cp -f /etc/squid/cachemgr.conf{,.bak} >/dev/null 2>&1
 sudo cp -f $gp/conf/squid/{squid,cachemgr}.conf /etc/squid
@@ -1394,14 +1431,14 @@ sudo sync
 echo OK
 clear
 echo
-echo "Creando contrasena de acceso a /var/www/html..."
+echo "Create Apache Password /var/www/html..."
 echo
 sudo cp -f /etc/apache2/sites-enabled/000-default.conf{,.bak} >/dev/null 2>&1
 sudo cp -f $gp/conf/apache/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 sudo htpasswd -c /etc/apache2/.htpasswd $USER
 echo OK
 echo
-echo "Agregando tareas al crontab..."
+echo "Crontab tasks..."
 sudo crontab -l | { cat; echo "
 @reboot /etc/init.d/leases.sh
 @reboot /etc/init.d/iptables.sh
@@ -1417,17 +1454,17 @@ sudo crontab -l | { cat; echo "
 sudo service cron restart
 echo OK
 echo
-echo "Eliminando huerfanos..."
+echo "Removing orphans..."
 sudo deborphan | xargs sudo apt -y remove --purge
 sudo deborphan --guess-data | xargs sudo apt -y remove --purge
 sudo dpkg --configure -a && sudo apt -f install
 echo OK
 echo
-echo "Actualizacion y Limpieza"
+echo "Clean and Update"
 updateandclean
 clear
 echo
-echo "Fin de la instalacion. Presione ENTER para reiniciar";
+echo "Done. Presione ENTER para reiniciar - Press ENTER to reboot";
 read RES
 mkdir -p .local/share/Trash/files >/dev/null 2>&1
 mv -f *.deb gateproxy* *.md5 .local/share/Trash/files >/dev/null 2>&1

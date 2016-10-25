@@ -6,43 +6,50 @@
 
 El script de instalación y configuración es totalmente automatizado y personalizable, de acuerdo a las necesidades del administrador u organización, con una interacción mínima durante proceso, reduciendo así la curva de aprendizaje. Puede ser implementado tanto en un servidor "físico", como en una VM, para mayor flexibilidad y portabilidad.
 
-### Descripción
+[Gateproxy] (http://www.gateproxy.com) is a server for managing home & business LANs, and inattentive as intuitive as possible, suitable for handling user, regardless of whether it has a high degree of knowledge in GNU/Linux, thus creating a better experience.
+
+The installation and configuration script is fully automated and customizable according to the needs of the administrator or organization, with minimal interaction during the process, thus reducing the learning curve. It can be implemented in either a "physical" server, such as in a VM, for greater flexibility and portability.
+
+### Descripción - Description
 
 - HowTO:        [Gateproxy.pdf] (https://goo.gl/ZT4LTi)
 - Version:      1.0 Alpha
 
-### Requisitos Mínimos
+### Requisitos Mínimos -Minimum requirements
 
 - GNU/Linux:    [Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download)
-- Procesador:   Intel compatible 1x GHz
+- Processor:    Intel compatible 1x GHz
 - Interfaces:   eth0, eth1
 - RAM:          4GB
 - DD:           200 GB
-- Internet:     Alta velocidad (recomendado)
-- Bash:         4.3x (verifique con `echo $BASH_VERSION`)
-- Desktop:      [Mate] (http://mate-desktop.org/) (Opcional)
+- Internet:     High speed (recommended)
+- Bash:         4.3x (check with `echo $BASH_VERSION`)
+- Desktop:      [Mate] (http://mate-desktop.org/) (Optional)
+- Languaje:		eng-spa
 
-### Instalación
+### Instalación - Installation
 
 Abra el terminal y ejecute (no-root):
+
+Open the terminal and run (no-root):
 ```
 $ git clone https://github.com/maravento/gateproxy.git
 $ chmod +x gateproxy/gateproxy.sh && gateproxy/gateproxy.sh
 ```
 ![Gateproxy](https://3.bp.blogspot.com/-ihJ9Qt0lYGM/V-AjCh1Jr6I/AAAAAAAACxQ/uyWGtPhP2q8EADyDMke5Nf56T_Nnqr1mgCLcB/s1600/gateproxy.jpg)
 
-### Dependencias
+### Dependencias - Dependencies
 
 ```
 sudo apt-get -y install git apt dpkg
 ```
 
-Si tiene una versión anterior a [Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download), actualice con:
+Upgrade to [Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download):
 ```
 sudo do-release-upgrade -d
 ```
 
-### Proyectos Propios Incluidos
+### Own Projects Included
 
 [Blackweb] (https://github.com/maravento/blackweb)
 
@@ -53,12 +60,12 @@ sudo do-release-upgrade -d
 [Whiteip] (https://github.com/maravento/whiteip)
 
 
-### Proyectos Fork Incluidos
+### Fork Projects Included
 
 [Blackusb] (https://github.com/maravento/blackusb)
 
 
-### Proyectos de Terceros incluidos
+### External Projects Included
 
 [4nonimizer] (https://github.com/Hackplayers/4nonimizer)
 
@@ -68,13 +75,15 @@ sudo do-release-upgrade -d
 
 [Owasp-modsecurity-crs] (https://github.com/SpiderLabs/owasp-modsecurity-crs)
 
+[DDoS Deflate] (https://github.com/jgmdev/ddos-deflate)
 
-### Exención de Responsabilidad
 
-Este script puede dañar su sistema si se usa incorrectamente. Úselo bajo su propio riesgo. Lea [HowTO Gateproxy] (https://goo.gl/ZT4LTi)
+### Exención de Responsabilidad - Disclaimer
+
+Este script puede dañar su sistema si se usa incorrectamente. Úselo bajo su propio riesgo. This script can damage your system if used incorrectly. Use it at your own risk. [HowTO Gateproxy] (https://goo.gl/ZT4LTi)
 
 ### Legal
 
-This Project is educational purposes. Este proyecto es con fines educativos. Agradecemos a todos aquellos que han contribuido a este proyecto, en especial [novatoz.com] (http://www.novatoz.com)
+This Project is educational purposes. Este proyecto es con fines educativos. Agradecemos a todos aquellos que han contribuido a este proyecto. We thank all those who contributed to this project. Special thanks to [novatoz.com] (http://www.novatoz.com)
 
-© 2016 [Gateproxy] (http://www.gateproxy.com) por [maravento] (http://www.maravento.com)
+© 2016 [Gateproxy] (http://www.gateproxy.com) by [maravento] (http://www.maravento.com)
