@@ -15,7 +15,8 @@ The installation and configuration script is fully automated and customizable ac
 - HowTO:        [Gateproxy.pdf] (https://goo.gl/ZT4LTi)
 - Version:      1.0 Alpha
 
-### Requisitos Mínimos -Minimum requirements
+### Requisitos Mínimos - Minimum requirements
+
 
 - GNU/Linux:    [Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download)
 - Processor:    Intel compatible 1x GHz
@@ -78,12 +79,16 @@ sudo do-release-upgrade -d
 [DDoS Deflate] (https://github.com/jgmdev/ddos-deflate)
 
 
-### Exención de Responsabilidad - Disclaimer
+### Licence
 
-Este script puede dañar su sistema si se usa incorrectamente. Úselo bajo su propio riesgo. This script can damage your system if used incorrectly. Use it at your own risk. [HowTO Gateproxy] (https://goo.gl/ZT4LTi)
-
-### Legal
+[GPL-3.0] (https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 This Project is educational purposes. Este proyecto es con fines educativos. Agradecemos a todos aquellos que han contribuido a este proyecto. We thank all those who contributed to this project. Special thanks to [novatoz.com] (http://www.novatoz.com)
 
 © 2016 [Gateproxy] (http://www.gateproxy.com) by [maravento] (http://www.maravento.com)
+
+## Disclaimer
+
+Este script puede dañar su sistema si se usa incorrectamente. Úselo bajo su propio riesgo. This script can damage your system if used incorrectly. Use it at your own risk. [HowTO Gateproxy] (https://goo.gl/ZT4LTi)
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
