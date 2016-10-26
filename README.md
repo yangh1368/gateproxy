@@ -10,12 +10,12 @@ El script de instalación y configuración es totalmente automatizado y personal
 
 The installation and configuration script is fully automated and customizable according to the needs of the administrator or organization, with minimal interaction during the process, thus reducing the learning curve. It can be implemented in either a "physical" server, such as in a VM, for greater flexibility and portability.
 
-### Descripción - Description
+### Descripción/Description
 
 - HowTO:        [Gateproxy.pdf] (https://goo.gl/ZT4LTi)
 - Version:      1.0 Alpha
 
-### Requisitos Mínimos - Minimum requirements
+### Requisitos Mínimos/Minimum requirements
 
 
 - GNU/Linux:    [Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download)
@@ -28,18 +28,17 @@ The installation and configuration script is fully automated and customizable ac
 - Desktop:      [Mate] (http://mate-desktop.org/) (Optional)
 - Languaje:		eng-spa
 
-### Instalación - Installation
+### Instalación/Installation
 
-Abra el terminal y ejecute (no-root):
+Abra el terminal y ejecute/Open the terminal and run (no-root)
 
-Open the terminal and run (no-root):
 ```
 $ git clone https://github.com/maravento/gateproxy.git
 $ chmod +x gateproxy/gateproxy.sh && gateproxy/gateproxy.sh
 ```
 ![Gateproxy](https://3.bp.blogspot.com/-ihJ9Qt0lYGM/V-AjCh1Jr6I/AAAAAAAACxQ/uyWGtPhP2q8EADyDMke5Nf56T_Nnqr1mgCLcB/s1600/gateproxy.jpg)
 
-### Dependencias - Dependencies
+### Dependencias/Dependencies
 
 ```
 sudo apt-get -y install git apt dpkg
