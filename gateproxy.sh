@@ -15,7 +15,7 @@ lm2=("Por favor responda" "Please Answer")
 lm3=("Introduzca" "Enter")
 lm4=("Ha introducido correctamente" "You have entered correctly")
 lm5=("Desea cambiar" "Do you want to change")
-lm6=("Ha introducido" "You have entered"
+lm6=("Ha introducido" "You have entered")
 lm7=("Desea instalar" "Do you want to install")
 lm8=("Puede elegir cada uno" "You can choose each")
 lm9=("para activar" "to activate")
@@ -30,14 +30,10 @@ cm6=("Reinicie su servidor y ejecute nuevamente gateproxy.sh" "Restart your serv
 cm7=("Gateproxy trabaja con NIC-Ethernet. Si eligió una interfaz WiFi" "Gateproxy works with Ethernet NIC. If you chose a WiFi interface")
 cm8=("edite /etc/udev/rules.d/10-network.rules antes de reiniciar su" "edit /etc/udev/rules.d/10-network.rules before restarting your")
 cm9=("servidor, y en KERNEL de interfaz WiFi, reemplace: en* por wl*" "server, and KERNEL WiFi interface, replace: in * for wl *")
-cm10=("Bienvenido a la instalacion de GateProxy Server (v1.0 Alpha)" "Welcome to installing GateProxy Server (v1.0 Alpha)")
-cm11=("Este script puede dañar su sistema si se usa incorrectamente" "This script can damage your system if used incorrectly")
-cm12=("Para mayor información, visite gateproxy.com y lea el HowTO" "For more information, visit gateproxy.com and read the HowTO")
-cm13=("Presione ENTER para iniciar o CTRL+C para cancelar" "Press ENTER to start or CTRL + C to cancel")
-cm14=("Verifique su conexion a internet y reinicie el script" "Check your internet connection and restart the script")
-cm15=("y activar carpeta compartida" "and enabled shared folder")
-cm16=("con papelera de reciclaje y auditoria" "with recycle bin and audit")
-cm17=("Desea activar la proteccion de puertos usb via udev" "Do you want to activate the protection of USB ports via udev")
+cm10=("Verifique su conexion a internet y reinicie el script" "Check your internet connection and restart the script")
+cm11=("y activar carpeta compartida" "and enabled shared folder")
+cm12=("con papelera de reciclaje y auditoria" "with recycle bin and audit")
+cm13=("Desea activar la proteccion de puertos usb via udev" "Do you want to activate the protection of USB ports via udev")
 
 test "${LANG:0:2}" == "es"
 es=$?
@@ -111,9 +107,10 @@ is_interfaces
 
 clear
 echo
-echo "  ${cm10[${es}]}"
+echo "    Bienvenido a la instalacion de GateProxy Server v1.0"
+echo "        Welcome to installing GateProxy Server v1.0     "
 echo
-echo "  Requisitos Mínimos - Minimum requirements:"
+echo "  Requisitos Mínimos / Minimum requirements:"
 echo "  GNU/Linux:    Ubuntu 16.04.x LTS x64"
 echo "  Processor:    Intel compatible 1x GHz"
 echo "  Interfaces:   eth0, eth1"
@@ -123,13 +120,15 @@ echo "  Internet:     High Speed"
 echo "  Desktop:      Mate (optional)"
 echo "  Dependencies: sudo apt-get -y install git apt dpkg"
 echo
+echo "  Exención de responsabilidad / Disclaimer:
+  Este script puede dañar su sistema si se usa incorrectamente
+  Para mayor información, visite gateproxy.com y lea el HowTO
+  This script can damage your system if used incorrectly
+  For more information, visit gateproxy.com and read the HowTO"
 echo
-echo "  Exención de responsabilidad - Disclaimer:
-  ${cm11[${es}]}
-  ${cm12[${es}]}"
-echo
-echo
-echo "  ${cm13[${es}]}";
+echo "  Presione ENTER para iniciar o CTRL+C para cancelar
+  Press ENTER to start or CTRL+C to cancel
+";
 read RES
 clear
 echo
@@ -145,7 +144,7 @@ b=$(cat $gp/gateproxy.md5 | awk '{print $1}')
    	echo OK
   else
    	echo "Bad sum. Abort"
-   	echo "${cm14[${es}]}"
+   	echo "${cm10[${es}]}"
    	rm -rf gateproxy*
 	exit
 fi
@@ -780,7 +779,7 @@ while true; do
 	cd
 	#sudo adduser $USER vboxusers
 	sudo usermod -a -G vboxusers $USER
-	echo "verify groups $USER"
+	echo "check groups $USER"
 	sudo cp -f $gp/conf/virtual/vm /etc/init.d/vm
 	sudo chown root:root /etc/init.d/vm
 	sudo chmod +x /etc/init.d/vm
@@ -906,8 +905,8 @@ function is_samba(){
 clear
 echo
 while true; do
-	read -p "${lm7[${es}]} Samba ${cm15[${es}]}
-${cm16[${es}]}? (y/n)" answer
+	read -p "${lm7[${es}]} Samba ${cm11[${es}]}
+${cm12[${es}]}? (y/n)" answer
 		case $answer in
           [Yy]* )
             	# execute command yes
@@ -1071,9 +1070,9 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (y/n)" answer
 	sudo apachectl -M | grep security2
 	sudo apachectl -M | grep evasive
 	sudo apache2ctl configtest
-	echo "Verify: security2_module (shared),evasive20_module (shared),Syntax OK"
+	echo "Check: security2_module (shared),evasive20_module (shared),Syntax OK"
 	echo OK
-	echo "Verify: tail /var/log/apache2/error.log"
+	echo "Check: tail /var/log/apache2/error.log"
 	echo
 	echo "Rootkit checkers setup..."
 	sudo apt -f install && sudo apt -y install rkhunter chkrootkit && sudo apt -f install
@@ -1083,7 +1082,7 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (y/n)" answer
 	sudo cp -f /etc/default/rkhunter{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/apache/rkhunter /etc/default/rkhunter
 	sudo crontab -l | { cat; echo "@weekly /usr/bin/rkhunter --cronjob --update --quiet"; } | sudo crontab -
-	echo "Verify: /var/log/rkhunter.log"
+	echo "Check: /var/log/rkhunter.log"
 	echo OK
 	echo
 			break;;
@@ -1351,7 +1350,7 @@ echo
 function is_blackusb(){
 while true; do
     read -p "Blackusb Project:
-${cm17[${es}]}? (y/n)" answer
+${cm13[${es}]}? (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes

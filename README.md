@@ -36,7 +36,7 @@ Abra el terminal y ejecute/Open the terminal and run (no-root)
 $ git clone https://github.com/maravento/gateproxy.git
 $ chmod +x gateproxy/gateproxy.sh && gateproxy/gateproxy.sh
 ```
-![Gateproxy](https://3.bp.blogspot.com/-ihJ9Qt0lYGM/V-AjCh1Jr6I/AAAAAAAACxQ/uyWGtPhP2q8EADyDMke5Nf56T_Nnqr1mgCLcB/s1600/gateproxy.jpg)
+![Gateproxy](https://2.bp.blogspot.com/-wExMnhIQyHs/WBX9CIDh8cI/AAAAAAAAC2E/BYvutPnjvzQEuIAIkxv_n3LxgBM7sukEwCLcB/s1600/gateproxy.jpg)
 
 ### Dependencias/Dependencies
 
@@ -75,8 +75,6 @@ sudo do-release-upgrade -d
 
 [Owasp-modsecurity-crs] (https://github.com/SpiderLabs/owasp-modsecurity-crs)
 
-[DDoS Deflate] (https://github.com/jgmdev/ddos-deflate)
-
 
 ### Licence
 
@@ -86,7 +84,7 @@ This Project is educational purposes. Este proyecto es con fines educativos. Agr
 
 © 2016 [Gateproxy] (http://www.gateproxy.com) by [maravento] (http://www.maravento.com)
 
-## Disclaimer
+#### Disclaimer
 
 Este script puede dañar su sistema si se usa incorrectamente. Úselo bajo su propio riesgo. This script can damage your system if used incorrectly. Use it at your own risk. [HowTO Gateproxy] (https://goo.gl/ZT4LTi)
 
