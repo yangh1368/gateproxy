@@ -10,7 +10,7 @@
 #
 # Language spa-eng
 #
-lm1=("Usuarios Avanzados" "Advanced Users")
+lm1=("Avanzado" "Advanced")
 lm2=("Por favor responda" "Please Answer")
 lm3=("Introduzca" "Enter")
 lm4=("Ha introducido correctamente" "You have entered correctly")
@@ -31,9 +31,9 @@ cm7=("Gateproxy trabaja con NIC-Ethernet. Si eligió una interfaz WiFi" "Gatepro
 cm8=("edite /etc/udev/rules.d/10-network.rules antes de reiniciar su" "edit /etc/udev/rules.d/10-network.rules before restarting your")
 cm9=("servidor, y en KERNEL de interfaz WiFi, reemplace: en* por wl*" "server, and KERNEL WiFi interface, replace: in * for wl *")
 cm10=("Verifique su conexion a internet y reinicie el script" "Check your internet connection and restart the script")
-cm11=("y activar carpeta compartida" "and enabled shared folder")
-cm12=("con papelera de reciclaje y auditoria" "with recycle bin and audit")
-cm13=("Desea activar la proteccion de puertos usb via udev" "Do you want to activate the protection of USB ports via udev")
+cm11=("con carpeta compartida" "with shared folder")
+cm12=("papelera de reciclaje y auditoria" "recycle bin and audit")
+cm13=("Proteccion de puertos usb via udev" "USB ports protection via udev")
 
 test "${LANG:0:2}" == "es"
 es=$?
@@ -127,8 +127,7 @@ echo "  Exención de responsabilidad / Disclaimer:
   For more information, visit gateproxy.com and read the HowTO"
 echo
 echo "  Presione ENTER para iniciar o CTRL+C para cancelar
-  Press ENTER to start or CTRL+C to cancel
-";
+  Press ENTER to start or CTRL+C to cancel";
 read RES
 clear
 echo
@@ -392,6 +391,8 @@ echo
 	sudo cp -f $gp/conf/mail/master.cf /etc/postfix/master.cf
 	sudo cp -f /etc/postfix/main.cf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/mail/main.cf /etc/postfix/main.cf
+    sudo chmod 777 /var/lib/update-notifier/package-data-downloads/partial
+	sudo apt-get -y install ttf-mscorefonts-installer
 	echo OK
 
 updateandclean
@@ -480,25 +481,6 @@ Recommend: Proxy No-Transparent (n)
 	echo
 	is_proxy
 	echo OK
-			break;;
-        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
-    esac
-done
-
-# MICROSOFT FONTS
-clear
-echo
-while true; do
-	read -p "${lm7[${es}]} Microsoft ttf-mscorefonts? (y/n)" answer
-    	case $answer in
-          [Yy]* )
-		# execute command yes
-	sudo chmod 777 /var/lib/update-notifier/package-data-downloads/partial
-	sudo apt-get -y install ttf-mscorefonts-installer
-	echo OK
-			break;;
-          	[Nn]* )
-		# execute command no
 			break;;
         * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
@@ -698,7 +680,7 @@ function is_logs(){
 }
 
 while true; do
-    read -p "${lm7[${es}]} Pack Reports, Logs, Monitoring? (recommended)
+    read -p "${lm7[${es}]} Pack Reports, Logs, Monitoring? (recommended-recomendado)
 Sqstat, NetData, Iptraf, nethogs, Webalizer, Monitorix, Bandwidthd, Speedtest,
 nload, Sarg, Top Family, Logwatch, Logrotate, Ulogd2, logtail, Awstats (y/n)" answer
 		case $answer in
@@ -959,12 +941,9 @@ done
 }
 
 while true; do
-	read -p "Optional Pack:
-
+	read -p "${lm7[${es}]} Optional Pack?
 Mate Desktop, Virtualbox Pack, gdiskdump, Samba,
-Vino server, Remote Desktop (Teamviewer-Remmina)
-
-${lm7[${es}]} (${lm8[${es}]})? (y/n)" answer
+Vino server, Remote Pack Teamviewer-Remmina (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
@@ -989,7 +968,7 @@ function is_security(){
 clear
 echo
 while true; do
-   read -p "${lm7[${es}]} Security Pack (${lm1[${es}]})?
+   read -p "${lm7[${es}]} Security Pack?
 Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (y/n)" answer
 		case $answer in
           [Yy]* )
@@ -1101,7 +1080,7 @@ function is_ids(){
 clear
 echo
 while true; do
-   read -p "NIPS/NIDS in Docker (Experimental Pack)
+   read -p "NIPS/NIDS in Docker (Experimental):
 ${lm7[${es}]} Snort? (with Barnyard2, PulledPork, Snorby) (y/n)" answer
 		case $answer in
           [Yy]* )
@@ -1178,7 +1157,7 @@ function is_pass(){
 clear
 echo
 while true; do
-    read -p "${lm7[${es}]} Encryption? (${lm1[${es}]})
+    read -p "${lm7[${es}]} Encryption Pack?
 libpam-cracklib, 2-Factor Google Authentication, Veracrypt (y/n)" answer
 		case $answer in
           [Yy]* )
@@ -1206,7 +1185,7 @@ function is_audit(){
 clear
 echo
 while true; do
-    read -p "${lm7[${es}]} Net Tools - Audit? (${lm1[${es}]}) 
+    read -p "${lm7[${es}]} Network Audit Pack? 
 Lynis, Nmap, Zenmap, ArpScan, python-nmap, Pipe Viewer, SSlscan, nbtscan,
 cutter, wireshark, Hping, tcpdump, NetDiscover, My traceroute, Networking,
 toolkit, Byobu, dsniff, wireless-tools (y/n)" answer
@@ -1224,27 +1203,32 @@ toolkit, Byobu, dsniff, wireless-tools (y/n)" answer
 done
 }
 
+# VPN
+function is_vpn(){
 clear
 echo
 while true; do
-	read -p "Encryption, Security and Audit Pack (${lm1[${es}]}):
-
-Fail2Ban, DDOS Deflate, Mod Security, OWASP, Mod evasive, Rootkit checkers,
-Snort with Barnyard2, PulledPork, Snorby in Docker, ClamAV, libpam-cracklib,
-2-Factor GoogleAuth, Veracrypt, Lynis, Nmap, Zenmap, ArpScan, SSLscan, cutter
-python-nmap, Pipe Viewer, nbtscan, wireshark, Hping, tcpdump, dsniff, Byobu
-My traceroute, Networking, toolkit, NetDiscover, wireless-tools
-
-${lm7[${es}]} (${lm8[${es}]})? (y/n)" answer
+   read -p "${lm7[${es}]} VPN Pack?
+4nonimizer, FruhoVPN, OpenVPN (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
-	is_security
-	is_ids
-	is_clamav
-	is_pass
-	is_audit
+	echo
+	git clone https://github.com/Hackplayers/4nonimizer.git
+	cd 4nonimizer && sudo chmod +x 4nonimizer && sudo ./4nonimizer install && cd
 	echo OK
+    cd
+	echo "HowTO: https://github.com/Hackplayers/4nonimizer"
+	echo
+    	echo "FruhoVPN setup..."
+	sudo rm fruho*.deb >/dev/null 2>&1 && sudo apt -y purge fruho >/dev/null 2>&1
+	last=$(wget -O - https://github.com/fruho/fruhoapp/releases | grep -Po '/[^"]+download[^"]+' | grep deb | grep amd64 | sort | tail -1)
+	wget https://github.com$last -O fruho.deb
+	sudo dpkg -i fruho.deb && sudo apt-get install -f
+	echo OK
+	echo "OpenVPN setup..."
+	sudo apt -f install && sudo apt -y install openvpn
+	echo
 			break;;
           	[Nn]* )
 		# execute command no
@@ -1252,14 +1236,44 @@ ${lm7[${es}]} (${lm8[${es}]})? (y/n)" answer
         * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
+}
 
-# MODULO DNS
+
+# BLACKUSB
+clear
+echo
+function is_blackusb(){
+while true; do
+    read -p "${lm7[${es}]} Blackusb?
+${cm13[${es}]} (y/n)" answer
+		case $answer in
+          [Yy]* )
+		# execute command yes
+	git clone https://github.com/maravento/blackusb.git
+	sudo cp -f blackusb/blackusb /etc/init.d >/dev/null 2>&1
+	sudo chown root:root /etc/init.d/blackusb
+	sudo chmod +x /etc/init.d/blackusb
+    	sudo /etc/init.d/blackusb on >/dev/null 2>&1
+	sudo rm -rf blackusb >/dev/null 2>&1
+	sudo crontab -l | { cat; echo "@reboot /etc/init.d/blackusb on"; } | sudo crontab -
+	echo OK
+	echo "HowTO https://github.com/maravento/blackusb"
+			break;;
+          	[Nn]* )
+		# execute command no
+			break;;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
+    esac
+done
+}
+
+# DNS
 clear
 echo
 function is_dnsmasq(){
 while true; do
-	read -p "DNS-LOCAL Pack (${lm1[${es}]}):
-${lm7[${es}]} dnsmasq (deactivate resolvconf - restore resolv.conf? (y/n)" answer
+	read -p "${lm7[${es}]} DNS-LOCAL (dnsmasq)?
+deactivate resolvconf - restore resolv.conf (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
@@ -1307,33 +1321,30 @@ ${lm7[${es}]} dnsmasq (deactivate resolvconf - restore resolv.conf? (y/n)" answe
     esac
 done
 }
-is_dnsmasq
 
-# VPN
-function is_vpn(){
 clear
 echo
 while true; do
-   read -p "${lm7[${es}]} VPN Pack? (${lm1[${es}]})
-4nonimizer, FruhoVPN, OpenVPN (y/n)" answer
+	read -p "${lm7[${es}]} Encryption, Security, VPN, DNS and Audit Pack (${lm1[${es}]}):
+
+Fail2Ban, DDOS Deflate, Mod Security, OWASP, Mod evasive, Rootkit checkers,
+Snort with Barnyard2, PulledPork, Snorby in Docker, ClamAV, libpam-cracklib,
+2-Factor GoogleAuth, Veracrypt, Lynis, Nmap, Zenmap, ArpScan, SSLscan, cutter
+python-nmap, Pipe Viewer, nbtscan, wireshark, Hping, tcpdump, dsniff, Byobu
+My traceroute, Networking, toolkit, NetDiscover, wireless-tools, DNS-Local,
+BlackUSB, 4nonimizer, FruhoVPN, OpenVPN. (${lm8[${es}]})? (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
-	echo
-	git clone https://github.com/Hackplayers/4nonimizer.git
-	sudo chmod +x 4nonimizer/4nonimizer && sudo 4nonimizer/4nonimizer install
+	is_security
+	is_ids
+	is_clamav
+	is_pass
+	is_audit
+    is_vpn
+    is_blackusb
+    is_dnsmasq
 	echo OK
-	echo "HowTO: https://github.com/Hackplayers/4nonimizer"
-	echo
-    	echo "FruhoVPN setup..."
-	sudo rm fruho*.deb >/dev/null 2>&1 && sudo apt -y purge fruho >/dev/null 2>&1
-	last=$(wget -O - https://github.com/fruho/fruhoapp/releases | grep -Po '/[^"]+download[^"]+' | grep deb | grep amd64 | sort | tail -1)
-	wget https://github.com$last -O fruho.deb
-	sudo dpkg -i fruho.deb && sudo apt-get install -f
-	echo OK
-	echo "OpenVPN setup..."
-	sudo apt -f install && sudo apt -y install openvpn
-	echo
 			break;;
           	[Nn]* )
 		# execute command no
@@ -1341,37 +1352,6 @@ while true; do
         * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
     esac
 done
-}
-is_vpn
-
-# BLACKUSB
-clear
-echo
-function is_blackusb(){
-while true; do
-    read -p "Blackusb Project:
-${cm13[${es}]}? (y/n)" answer
-		case $answer in
-          [Yy]* )
-		# execute command yes
-	git clone https://github.com/maravento/blackusb.git
-	sudo cp -f blackusb/blackusb /etc/init.d >/dev/null 2>&1
-	sudo chown root:root /etc/init.d/blackusb
-	sudo chmod +x /etc/init.d/blackusb
-    	sudo /etc/init.d/blackusb on >/dev/null 2>&1
-	sudo rm -rf blackusb >/dev/null 2>&1
-	sudo crontab -l | { cat; echo "@reboot /etc/init.d/blackusb on"; } | sudo crontab -
-	echo OK
-	echo "HowTO https://github.com/maravento/blackusb"
-			break;;
-          	[Nn]* )
-		# execute command no
-			break;;
-        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
-    esac
-done
-}
-is_blackusb
 
 # CONFIG
 clear
@@ -1396,7 +1376,7 @@ sudo crontab -l | { cat; echo "@weekly /etc/init.d/blackweb.sh
 @weekly /etc/init.d/whiteip.sh"; } | sudo crontab -
 echo OK
 echo
-echo "Transferring config..."
+echo "Applying configurations..."
 sudo cp -f /etc/squid/squid.conf{,.bak} >/dev/null 2>&1
 sudo cp -f /etc/squid/cachemgr.conf{,.bak} >/dev/null 2>&1
 sudo cp -f $gp/conf/squid/{squid,cachemgr}.conf /etc/squid
