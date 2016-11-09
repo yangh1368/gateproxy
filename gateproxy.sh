@@ -1091,7 +1091,6 @@ ${lm7[${es}]} Snort? (with Barnyard2, PulledPork, Snorby) (y/n)" answer
     	sudo apt update && sudo apt -f install && sudo apt -y install docker-engine
 	sudo usermod -aG docker $(whoami)
 	sudo systemctl enable docker && sudo systemctl start docker
-	echo "VBox vs Docker en goo.gl/8FfC8O"
 	echo
 	echo "Snort, Barnyard2, PulledPork, Snorby setup..."
 	git clone https://github.com/amabrouki/snort.git
@@ -1208,26 +1207,20 @@ function is_vpn(){
 clear
 echo
 while true; do
-   read -p "${lm7[${es}]} VPN Pack?
-4nonimizer, FruhoVPN, OpenVPN (y/n)" answer
+   read -p "VPN Pack (${lm1[${es}]})
+${lm7[${es}]} FruhoVPN, OpenVPN? (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
 	echo
-	git clone https://github.com/Hackplayers/4nonimizer.git
-	cd 4nonimizer && sudo chmod +x 4nonimizer && sudo ./4nonimizer install && cd
-	echo OK
-    cd
-	echo "HowTO: https://github.com/Hackplayers/4nonimizer"
-	echo
-    	echo "FruhoVPN setup..."
+		echo "FruhoVPN setup..."
 	sudo rm fruho*.deb >/dev/null 2>&1 && sudo apt -y purge fruho >/dev/null 2>&1
 	last=$(wget -O - https://github.com/fruho/fruhoapp/releases | grep -Po '/[^"]+download[^"]+' | grep deb | grep amd64 | sort | tail -1)
 	wget https://github.com$last -O fruho.deb
 	sudo dpkg -i fruho.deb && sudo apt-get install -f
 	echo OK
 	echo "OpenVPN setup..."
-	sudo apt -f install && sudo apt -y install openvpn
+	sudo apt -f install && sudo apt -y install openvpn easy-rsa
 	echo
 			break;;
           	[Nn]* )
@@ -1238,13 +1231,37 @@ while true; do
 done
 }
 
+# ANONIMIZER PACK
+function is_anon(){
+clear
+echo
+while true; do
+   read -p "Anonymizer Pack (Experimental)
+${lm7[${es}]} 4nonimizer? (y/n)" answer
+		case $answer in
+          [Yy]* )
+		# execute command yes
+	echo
+	git clone https://github.com/Hackplayers/4nonimizer.git
+	cd 4nonimizer && sudo chmod +x 4nonimizer && sudo ./4nonimizer install && cd
+	echo OK
+	echo "HowTO: https://github.com/Hackplayers/4nonimizer"
+	echo
+			break;;
+          	[Nn]* )
+		# execute command no
+			break;;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
+    esac
+done
+}
 
 # BLACKUSB
 clear
 echo
 function is_blackusb(){
 while true; do
-    read -p "${lm7[${es}]} Blackusb?
+    read -p "${lm7[${es}]} Blackusb? (Experimental)
 ${cm13[${es}]} (y/n)" answer
 		case $answer in
           [Yy]* )
@@ -1272,7 +1289,7 @@ clear
 echo
 function is_dnsmasq(){
 while true; do
-	read -p "${lm7[${es}]} DNS-LOCAL (dnsmasq)?
+	read -p "${lm7[${es}]} DNS-LOCAL (dnsmasq)? (${lm1[${es}]})
 deactivate resolvconf - restore resolv.conf (y/n)" answer
 		case $answer in
           [Yy]* )
@@ -1332,7 +1349,7 @@ Snort with Barnyard2, PulledPork, Snorby in Docker, ClamAV, libpam-cracklib,
 2-Factor GoogleAuth, Veracrypt, Lynis, Nmap, Zenmap, ArpScan, SSLscan, cutter
 python-nmap, Pipe Viewer, nbtscan, wireshark, Hping, tcpdump, dsniff, Byobu
 My traceroute, Networking, toolkit, NetDiscover, wireless-tools, DNS-Local,
-BlackUSB, 4nonimizer, FruhoVPN, OpenVPN. (${lm8[${es}]})? (y/n)" answer
+BlackUSB, Anonimizer Pack, FruhoVPN, OpenVPN. (${lm8[${es}]})? (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
@@ -1342,6 +1359,7 @@ BlackUSB, 4nonimizer, FruhoVPN, OpenVPN. (${lm8[${es}]})? (y/n)" answer
 	is_pass
 	is_audit
     is_vpn
+	is_anon
     is_blackusb
     is_dnsmasq
 	echo OK
@@ -1357,7 +1375,7 @@ done
 clear
 echo
 echo "Download Blackweb, Blackip, Whiteip..."
-git clone https://github.com/maravento/blackweb
+git clone https://github.com/maravento/blackweb.git
 sudo cp -f blackweb/blackweb.sh /etc/init.d >/dev/null 2>&1
 tar -C blackweb -xvzf blackweb/blackweb.tar.gz >/dev/null 2>&1
 sudo cp -f blackweb/{blackweb,blackdomains,whitedomains}.txt /etc/acl >/dev/null 2>&1
