@@ -968,7 +968,7 @@ function is_security(){
 clear
 echo
 while true; do
-   read -p "${lm7[${es}]} Security Pack?
+   read -p "${lm7[${es}]} Security Pack? (${lm1[${es}]})
 Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (y/n)" answer
 		case $answer in
           [Yy]* )
@@ -1073,6 +1073,61 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (y/n)" answer
 done
 }
 
+# DNS
+clear
+echo
+function is_dnsmasq(){
+while true; do
+	read -p "${lm7[${es}]} DNS-LOCAL (dnsmasq)? (${lm1[${es}]})
+deactivate resolvconf - restore resolv.conf (y/n)" answer
+		case $answer in
+          [Yy]* )
+		# execute command yes
+	echo "DNS-LOCAL dnsmasq setup..."
+	sudo apt -f install && sudo apt -y install dnsmasq && sudo apt -f install
+	sudo cp -f /etc/dnsmasq.conf{,.bak} >/dev/null 2>&1
+	sudo cp -f $gp/conf/dnsmasq/dnsmasq.conf /etc/dnsmasq.conf
+	sudo touch /var/log/dnsmasq.log
+	sudo chown root:root /var/log/dnsmasq.log
+	sudo cp -f $gp/conf/dnsmasq/dnsmasq /etc/logrotate.d/dnsmasq
+	sudo cp -f /etc/default/dnsmasq{,.bak} >/dev/null 2>&1
+	#sudo cp -f $gp/conf/dnsmasq/dnsmasqdefault /etc/default/dnsmasq
+	sudo cp -f $gp/conf/dnsmasq/resolv.dnsmasq.conf /etc/resolv.dnsmasq.conf
+	sed -i '/DNS-LOCAL/r $gp/conf/dnsmasq/iptdnslocal.txt' $gp/conf/scripts/iptables.sh
+	sed -i '/outgoing_proxy/r $gp/conf/dnsmasq/squidoutgoing.txt' $gp/conf/squid/squid.conf
+	sed -i '/dnsmasq_server/r $gp/conf/dnsmasq/squiddnslocal.txt' $gp/conf/squid/squid.conf
+	sudo crontab -l | { cat; echo "@weekly cat >/dev/null /var/log/dnsmasq.log"; } | sudo crontab -
+	echo '# Dnsmasq service
+	date=`date +%d/%m/%Y" "%H:%M:%S`
+	if [[ `netstat -plan | grep -w dnsmasq` != "" ]];then
+	echo -e "\nONLINE"
+	else
+	echo -e "\n"
+	/etc/init.d/dnsmasq start
+	echo "<--| dnsmasq start $date |-->" >> /var/log/alert.log
+	fi'>> $gp/conf/scripts/servicesreload.sh
+	echo OK
+	echo
+	sudo dpkg-reconfigure resolvconf
+	# sudo resolvconf -u
+	sudo cp -f /etc/NetworkManager/NetworkManager.conf{,.bak}
+	sudo cp -f $gp/conf/net/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
+	sudo rm -rf /etc/resolv.conf >/dev/null 2>&1
+	sudo cp -f $gp/conf/net/resolv.conf /etc/resolv.conf
+	echo OK
+			break;;
+          	[Nn]* )
+		# execute command no
+	sed -i '/DNS-PUBLIC/r $gp/conf/dnsmasq/iptdnspublic.txt' $gp/conf/scripts/iptables.sh
+	sed -i '/DNS-PUBLIC/r $gp/conf/dnsmasq/squiddnspublic.txt' $gp/conf/squid/squid.conf
+	echo OK
+	echo
+			break;;
+        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
+    esac
+done
+}
+
 function is_ids(){
 # IDS/IPS (Experimental)
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
@@ -1156,7 +1211,7 @@ function is_pass(){
 clear
 echo
 while true; do
-    read -p "${lm7[${es}]} Encryption Pack?
+    read -p "${lm7[${es}]} Encryption Pack? (${lm1[${es}]})
 libpam-cracklib, 2-Factor Google Authentication, Veracrypt (y/n)" answer
 		case $answer in
           [Yy]* )
@@ -1184,7 +1239,7 @@ function is_audit(){
 clear
 echo
 while true; do
-    read -p "${lm7[${es}]} Network Audit Pack? 
+    read -p "${lm7[${es}]} Network Audit Pack? (${lm1[${es}]})
 Lynis, Nmap, Zenmap, ArpScan, python-nmap, Pipe Viewer, SSlscan, nbtscan,
 cutter, wireshark, Hping, tcpdump, NetDiscover, My traceroute, Networking,
 toolkit, Byobu, dsniff, wireless-tools (y/n)" answer
@@ -1207,8 +1262,8 @@ function is_vpn(){
 clear
 echo
 while true; do
-   read -p "VPN Pack (${lm1[${es}]})
-${lm7[${es}]} FruhoVPN, OpenVPN? (y/n)" answer
+   read -p "VPN-Anonymizer Pack (Experimental)
+${lm7[${es}]} FruhoVPN, OpenVPN, 4nonimizer? (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
@@ -1221,27 +1276,8 @@ ${lm7[${es}]} FruhoVPN, OpenVPN? (y/n)" answer
 	echo OK
 	echo "OpenVPN setup..."
 	sudo apt -f install && sudo apt -y install openvpn easy-rsa
-	echo
-			break;;
-          	[Nn]* )
-		# execute command no
-			break;;
-        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
-    esac
-done
-}
-
-# ANONIMIZER PACK
-function is_anon(){
-clear
-echo
-while true; do
-   read -p "Anonymizer Pack (Experimental)
-${lm7[${es}]} 4nonimizer? (y/n)" answer
-		case $answer in
-          [Yy]* )
-		# execute command yes
-	echo
+    echo OK
+    echo "4nonimizer setup"
 	git clone https://github.com/Hackplayers/4nonimizer.git
 	cd 4nonimizer && sudo chmod +x 4nonimizer && sudo ./4nonimizer install && cd
 	echo OK
@@ -1284,61 +1320,6 @@ ${cm13[${es}]} (y/n)" answer
 done
 }
 
-# DNS
-clear
-echo
-function is_dnsmasq(){
-while true; do
-	read -p "${lm7[${es}]} DNS-LOCAL (dnsmasq)? (${lm1[${es}]})
-deactivate resolvconf - restore resolv.conf (y/n)" answer
-		case $answer in
-          [Yy]* )
-		# execute command yes
-	echo "DNS-LOCAL dnsmasq setup..."
-	sudo apt -f install && sudo apt -y install dnsmasq && sudo apt -f install
-	sudo cp -f /etc/dnsmasq.conf{,.bak} >/dev/null 2>&1
-	sudo cp -f $gp/conf/dnsmasq/dnsmasq.conf /etc/dnsmasq.conf
-	sudo touch /var/log/dnsmasq.log
-	sudo chown root:root /var/log/dnsmasq.log
-	sudo cp -f $gp/conf/dnsmasq/dnsmasq /etc/logrotate.d/dnsmasq
-	sudo cp -f /etc/default/dnsmasq{,.bak} >/dev/null 2>&1
-	#sudo cp -f $gp/conf/dnsmasq/dnsmasqdefault /etc/default/dnsmasq
-	sudo cp -f $gp/conf/dnsmasq/resolv.dnsmasq.conf /etc/resolv.dnsmasq.conf
-	sed -i '/DNS-LOCAL/r $gp/conf/dnsmasq/iptdnslocal.txt' $gp/conf/scripts/iptables.sh
-	sed -i '/outgoing_proxy/r $gp/conf/dnsmasq/squidoutgoing.txt' $gp/conf/squid/squid.conf
-	sed -i '/dnsmasq_server/r $gp/conf/dnsmasq/squiddnslocal.txt' $gp/conf/squid/squid.conf
-	sudo crontab -l | { cat; echo "@weekly cat >/dev/null /var/log/dnsmasq.log"; } | sudo crontab -
-	echo '# Dnsmasq service
-	date=`date +%d/%m/%Y" "%H:%M:%S`
-	if [[ `netstat -plan | grep -w dnsmasq` != "" ]];then
-	echo -e "\nONLINE"
-	else
-	echo -e "\n"
-	/etc/init.d/dnsmasq start
-	echo "<--| dnsmasq start $date |-->" >> /var/log/alert.log
-	fi'>> $gp/conf/scripts/servicesreload.sh
-	echo OK
-	echo
-	sudo dpkg-reconfigure resolvconf
-	# sudo resolvconf -u
-	sudo cp -f /etc/NetworkManager/NetworkManager.conf{,.bak}
-	sudo cp -f $gp/conf/net/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
-	sudo rm -rf /etc/resolv.conf >/dev/null 2>&1
-	sudo cp -f $gp/conf/net/resolv.conf /etc/resolv.conf
-	echo OK
-			break;;
-          	[Nn]* )
-		# execute command no
-	sed -i '/DNS-PUBLIC/r $gp/conf/dnsmasq/iptdnspublic.txt' $gp/conf/scripts/iptables.sh
-	sed -i '/DNS-PUBLIC/r $gp/conf/dnsmasq/squiddnspublic.txt' $gp/conf/squid/squid.conf
-	echo OK
-	echo
-			break;;
-        * ) echo; echo "${lm2[${es}]}: YES (y) or NO (n)";;
-    esac
-done
-}
-
 clear
 echo
 while true; do
@@ -1349,19 +1330,18 @@ Snort with Barnyard2, PulledPork, Snorby in Docker, ClamAV, libpam-cracklib,
 2-Factor GoogleAuth, Veracrypt, Lynis, Nmap, Zenmap, ArpScan, SSLscan, cutter
 python-nmap, Pipe Viewer, nbtscan, wireshark, Hping, tcpdump, dsniff, Byobu
 My traceroute, Networking, toolkit, NetDiscover, wireless-tools, DNS-Local,
-BlackUSB, Anonimizer Pack, FruhoVPN, OpenVPN. (${lm8[${es}]})? (y/n)" answer
+BlackUSB, VPN-Anonimizer Pack (${lm8[${es}]})? (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
 	is_security
+    is_dnsmasq
 	is_ids
 	is_clamav
 	is_pass
 	is_audit
     is_vpn
-	is_anon
     is_blackusb
-    is_dnsmasq
 	echo OK
 			break;;
           	[Nn]* )
@@ -1374,7 +1354,7 @@ done
 # CONFIG
 clear
 echo
-echo "Download Blackweb, Blackip, Whiteip..."
+echo "Blackweb, Blackip, Whiteip setup..."
 git clone https://github.com/maravento/blackweb.git
 sudo cp -f blackweb/blackweb.sh /etc/init.d >/dev/null 2>&1
 tar -C blackweb -xvzf blackweb/blackweb.tar.gz >/dev/null 2>&1
