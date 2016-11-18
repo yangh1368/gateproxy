@@ -2,13 +2,9 @@
 
 <a target="_blank" href=""><img src="https://img.shields.io/badge/Development-ALPHA-blue.svg"></a>
 
-[Gateproxy] (http://www.gateproxy.com) es un servidor para administrar pequeñas y medianas redes [LAN] (https://es.wikipedia.org/wiki/Red_de_%C3%A1rea_local), lo más intuitivo y desatendido posible, apto para el manejo del usuario, sin importar si tiene o no un alto grado de conocimientos en GNU/Linux, generando así una mejor experiencia.
+[Gateproxy] (http://www.gateproxy.com) es un servidor para administrar pequeñas y medianas redes [LAN] (https://es.wikipedia.org/wiki/Red_de_%C3%A1rea_local), lo más intuitivo y desatendido posible, apto para el manejo del usuario, sin importar si tiene o no un alto grado de conocimientos en GNU/Linux, generando así una mejor experiencia. El script de instalación y configuración es totalmente automatizado y personalizable, de acuerdo a las necesidades del administrador u organización, con una interacción mínima durante proceso, reduciendo así la curva de aprendizaje. Puede ser implementado tanto en un servidor "físico", como en una VM, para mayor flexibilidad y portabilidad.
 
-El script de instalación y configuración es totalmente automatizado y personalizable, de acuerdo a las necesidades del administrador u organización, con una interacción mínima durante proceso, reduciendo así la curva de aprendizaje. Puede ser implementado tanto en un servidor "físico", como en una VM, para mayor flexibilidad y portabilidad.
-
-[Gateproxy] (http://www.gateproxy.com) is a server for managing home & business LANs, and inattentive as intuitive as possible, suitable for handling user, regardless of whether it has a high degree of knowledge in GNU/Linux, thus creating a better experience.
-
-The installation and configuration script is fully automated and customizable according to the needs of the administrator or organization, with minimal interaction during the process, thus reducing the learning curve. It can be implemented in either a "physical" server, such as in a VM, for greater flexibility and portability.
+[Gateproxy] (http://www.gateproxy.com) is a server for managing home & business LANs, and inattentive as intuitive as possible, suitable for handling user, regardless of whether it has a high degree of knowledge in GNU/Linux, thus creating a better experience. The installation and configuration script is fully automated and customizable according to the needs of the administrator or organization, with minimal interaction during the process, thus reducing the learning curve. It can be implemented in either a "physical" server, such as in a VM, for greater flexibility and portability.
 
 ### Descripción/Description
 
@@ -16,7 +12,6 @@ The installation and configuration script is fully automated and customizable ac
 - Version:      1.0 Alpha
 
 ### Requisitos Mínimos/Minimum requirements
-
 
 - GNU/Linux:    [Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download)
 - Processor:    Intel compatible 1x GHz
@@ -41,10 +36,10 @@ $ chmod +x gateproxy/gateproxy.sh && gateproxy/gateproxy.sh
 ### Dependencias/Dependencies
 
 ```
-sudo apt-get -y install git apt dpkg
+git apt dpkg
 ```
 
-Upgrade to [Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download):
+[Ubuntu 16.04.x LTS x64] (http://www.ubuntu.com/download). Upgrade:
 ```
 sudo do-release-upgrade -d
 ```
