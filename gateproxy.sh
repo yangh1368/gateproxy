@@ -1361,8 +1361,8 @@ tar -C blackweb -xvzf blackweb/blackweb.tar.gz >/dev/null 2>&1
 sudo cp -f blackweb/{blackweb,blackdomains,whitedomains}.txt /etc/acl >/dev/null 2>&1
 git clone https://github.com/maravento/blackip.git
 sudo cp -f blackip/blackip.sh /etc/init.d >/dev/null 2>&1
+tar -C blackip -xvzf blackip/blackip.tar.gz >/dev/null 2>&1
 sudo cp -f blackip/blackip.txt /etc/acl >/dev/null 2>&1
-sudo /etc/init.d/blackip.sh
 git clone https://github.com/maravento/whiteip.git
 sudo cp -f whiteip/whiteip.sh /etc/init.d >/dev/null 2>&1
 sudo cp -f whiteip/whiteip.txt /etc/acl >/dev/null 2>&1
