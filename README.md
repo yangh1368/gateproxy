@@ -8,7 +8,7 @@
 
 ### Descripción/Description
 
-- HowTO:        [Gateproxy.pdf] (https://goo.gl/ZT4LTi)
+- HowTO:        [Gateproxy.pdf] (https://goo.gl/QL1pHh)
 - Version:      1.0 Alpha
 
 ### Requisitos Mínimos/Minimum requirements
