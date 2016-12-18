@@ -380,20 +380,25 @@ echo
     wget -q -O - http://deb.opera.com/archive.key | sudo apt-key add - && sleep 1 && sudo sh -c 'echo "deb http://deb.opera.com/opera-stable/ stable non-free" >> /etc/apt/sources.list.d/opera.list'
 	# Webmin
 	sudo sh -c 'echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list' && wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add -
-	# GetDeb Apps (Freefilesync, ubuntu-tweak, etc) http://www.getdeb.net/updates/ubuntu/16.04/
-	wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add - && sleep 1 && sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu $(lsb_release -sc)-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list' && sleep 1 && sudo gpg --keyserver keys.gnupg.net --recv-key 46D7E7CF && sleep 1 && sudo gpg --export --armor $PUBKRY | sudo apt-key add -
 	# Systemback
 	sudo add-apt-repository ppa:nemh/systemback --yes
     # Remove sendmail
 	sudo service sendmail stop >/dev/null 2>&1 && sudo update-rc.d -f sendmail remove
 	# Pack Install
-	sudo apt update && sudo apt -f install && sudo apt -y install build-essential checkinstall cdbs devscripts dh-make fakeroot libxml-parser-perl check avahi-daemon automake make dpatch patchutils autotools-dev debhelper quilt xutils lintian cmake libtool autoconf git git-core subversion bzr gcc patch module-assistant libupnp-dev dkms linux-headers-$(uname -r) rcconf dialog aptitude bleachbit gksu libgksu2-0 vmm libglib2.0-0 ntfs-config dconf-editor dconf-tools jfsutils sysinfo hardinfo deborphan gtkorphan xsltproc lshw-gtk gedit curl openssl uudeview bluefish geany gparted xfsprogs reiserfsprogs reiser4progs kpartx dmraid util-linux preload prelink synaptic perl libwww-perl libmailtools-perl libmime-lite-perl librrds-perl libdbi-perl libxml-simple-perl libhttp-server-simple-perl libconfig-general-perl libio-socket-ssl-perl libdate-manip-perl libclass-dbi-mysql-perl libnet-ssleay-perl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python python-pcapy python-cairo python-gi python-gobject python-gobject-2 python-gtk2 python-notify python-dev python-glade2 unattended-upgrades gnome-disk-utility gdebi gdebi-core unace zip unzip p7zip-full sharutils mpack arj cabextract rar unrar file-roller ipset vim ttf-dejavu hfsplus hfsprogs hfsutils hfsutils-tcltk exfat-fuse exfat-utils zenity w3m lsscsi winbind fping freefilesync p7zip-rar linux-tools-common searchmonkey ppa-purge google-chrome-stable firefox opera webmin snapd systemback systemback-locales unetbootin ubuntu-tweak rrdtool procps geoip-database netmask sipcalc ipcalc dmidecode libsasl2-modules postfix postfix-mysql postfix-doc mailutils netmask && sudo apt -f install && sudo dpkg --configure -a && sudo apt -f install && sudo m-a prepare
+	sudo apt update && sudo apt -f install && sudo apt -y install build-essential checkinstall cdbs devscripts dh-make fakeroot libxml-parser-perl check avahi-daemon automake make dpatch patchutils autotools-dev debhelper quilt xutils lintian cmake libtool autoconf git git-core subversion bzr gcc patch module-assistant libupnp-dev dkms linux-headers-$(uname -r) rcconf dialog aptitude bleachbit gksu libgksu2-0 vmm libglib2.0-0 ntfs-config dconf-editor dconf-tools jfsutils sysinfo hardinfo deborphan gtkorphan xsltproc lshw-gtk gedit curl openssl uudeview bluefish geany gparted xfsprogs reiserfsprogs reiser4progs kpartx dmraid util-linux preload prelink synaptic perl libwww-perl libmailtools-perl libmime-lite-perl librrds-perl libdbi-perl libxml-simple-perl libhttp-server-simple-perl libconfig-general-perl libio-socket-ssl-perl libdate-manip-perl libclass-dbi-mysql-perl libnet-ssleay-perl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python python-pcapy python-cairo python-gi python-gobject python-gobject-2 python-gtk2 python-notify python-dev python-glade2 unattended-upgrades gnome-disk-utility gdebi gdebi-core unace zip unzip p7zip-full sharutils mpack arj cabextract rar unrar file-roller ipset vim ttf-dejavu hfsplus hfsprogs hfsutils hfsutils-tcltk exfat-fuse exfat-utils zenity w3m lsscsi winbind fping p7zip-rar linux-tools-common searchmonkey ppa-purge google-chrome-stable firefox opera webmin snapd systemback systemback-locales unetbootin rrdtool procps geoip-database netmask sipcalc ipcalc dmidecode libsasl2-modules postfix postfix-mysql postfix-doc mailutils netmask && sudo apt -f install && sudo dpkg --configure -a && sudo apt -f install && sudo m-a prepare
 	sudo cp -f /etc/postfix/master.cf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/mail/master.cf /etc/postfix/master.cf
 	sudo cp -f /etc/postfix/main.cf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/mail/main.cf /etc/postfix/main.cf
     sudo chmod 777 /var/lib/update-notifier/package-data-downloads/partial
 	sudo apt-get -y install ttf-mscorefonts-installer
+    # freefilesync
+    sudo add-apt-repository ppa:eugenesan/ppa --yes
+    sudo apt update && sudo apt -y install freefilesync && sudo apt -f install
+    # ubuntu-tweak
+    sudo rm ubuntu-tweak*.deb >/dev/null 2>&1 && sudo apt -y purge ubuntu-tweak >/dev/null 2>&1
+	wget -c --retry-connrefused -t 0 http://archive.getdeb.net/ubuntu/pool/apps/u/ubuntu-tweak/ubuntu-tweak_0.8.7-1~getdeb2~xenial_all.deb
+	sudo dpkg -i --force-depends ubuntu-tweak_0.8.7-1~getdeb2~xenial_all.deb && sudo apt-get -f install
 	echo OK
 
 updateandclean
@@ -680,10 +685,21 @@ function is_logs(){
 	echo
 }
 
+function goaccess(){
+	echo "goaccess setup..."
+	echo "deb http://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/goaccess.list
+	wget -O - http://deb.goaccess.io/gnugpg.key | sudo apt-key add -
+	sudo apt update && sudo apt -y install goaccess
+    sudo cp -f $gp/conf/logs/goaccess.conf /etc/goaccess.conf
+	echo OK
+	echo "HowTO https://goaccess.io/"
+	echo
+}
+
 while true; do
     read -p "${lm7[${es}]} Pack Reports, Logs, Monitoring? (recommended-recomendado)
 Sqstat, NetData, Iptraf, nethogs, Webalizer, Monitorix, Bandwidthd, Speedtest,
-nload, Sarg, Top Family, Logwatch, Logrotate, Ulogd2, logtail, Awstats (y/n)" answer
+nload, Sarg, Top, Logwatch, Logrotate, Ulogd2, logtail, Awstats, goaccess (y/n)" answer
 		case $answer in
           [Yy]* )
 		# execute command yes
