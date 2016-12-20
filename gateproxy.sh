@@ -377,7 +377,7 @@ echo
 	# Firefox
 	sudo sh -c 'echo "deb http://ppa.launchpad.net/ubuntu-mozilla-security/ppa/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list' && sleep 1 && sudo gpg --keyserver keys.gnupg.net --recv-key A6DCF7707EBC211F && sleep 1 && sudo gpg --export --armor $PUBKRY | sudo apt-key add -
     # Opera
-    wget -q -O - http://deb.opera.com/archive.key | sudo apt-key add - && sleep 1 && sudo sh -c 'echo "deb http://deb.opera.com/opera-stable/ stable non-free" >> /etc/apt/sources.list.d/opera.list'
+	wget -q -O - http://deb.opera.com/archive.key | sudo apt-key add - && sleep 1 && sudo sh -c 'echo "deb http://deb.opera.com/opera-stable/ stable non-free" >> /etc/apt/sources.list.d/opera.list'
 	# Webmin
 	sudo sh -c 'echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list' && wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add -
 	# Systemback
@@ -390,7 +390,7 @@ echo
 	sudo cp -f $gp/conf/mail/master.cf /etc/postfix/master.cf
 	sudo cp -f /etc/postfix/main.cf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/mail/main.cf /etc/postfix/main.cf
-    sudo chmod 777 /var/lib/update-notifier/package-data-downloads/partial
+	sudo chmod 777 /var/lib/update-notifier/package-data-downloads/partial
 	sudo apt-get -y install ttf-mscorefonts-installer
     # freefilesync
     sudo add-apt-repository ppa:eugenesan/ppa --yes
@@ -681,9 +681,9 @@ function is_logs(){
 	sudo chown root:root /var/log
 	sudo cp -f /etc/cron.d/awstats{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/logs/awstats /etc/cron.d/awstats
-    sudo cp -f $gp/conf/logs/init.cfg /etc/darkstat/init.cfg
-    sudo sysv-rc-conf darkstat on
-    echo "darkstat: http://localhost:666//"
+	sudo cp -f $gp/conf/logs/init.cfg /etc/darkstat/init.cfg
+	sudo sysv-rc-conf darkstat on
+	echo "darkstat: http://localhost:666//"
 	echo OK
 	echo
 }
@@ -693,14 +693,14 @@ function is_goaccess(){
 	echo "deb http://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/goaccess.list
 	wget -O - http://deb.goaccess.io/gnugpg.key | sudo apt-key add -
 	sudo apt update && sudo apt -y install goaccess
-    sudo mkdir -p /var/www/html/goaccess
+	sudo mkdir -p /var/www/html/goaccess
 	sudo touch /var/www/html/goaccess/goaccess.html
 	sudo cp -f /etc/goaccess.conf{,.bak} >/dev/null 2>&1
-    sudo cp -f $gp/conf/logs/goaccess.conf /etc/goaccess.conf
+	sudo cp -f $gp/conf/logs/goaccess.conf /etc/goaccess.conf
 	sudo cp -f $gp/conf/logs/goaccessaudit.conf /etc/apache2/sites-enabled/goaccessaudit.conf
 	sed -i '/goaccess/r $gp/conf/logs/iptgoaccess.txt' $gp/conf/scripts/iptables.sh
 	sed -i '/goaccess/r $gp/conf/logs/goaccessport.txt' $gp/conf/apache/ports.conf
-    sudo crontab -l | { cat; echo 'zcat `find /var/log/apache2/ -name "access.log.*.gz" -mtime -35` | goaccess > /var/www/html/goaccess/goaccess.html'; } | sudo crontab -
+	sudo crontab -l | { cat; echo 'zcat `find /var/log/apache2/ -name "access.log.*.gz" -mtime -35` | goaccess > /var/www/html/goaccess/goaccess.html'; } | sudo crontab -
 	echo OK
 	echo "Goaccess daily logs: http://192.168.0.10:11700"
 	echo
@@ -723,7 +723,7 @@ Ntop-ng, Logrotate, Ulogd2, logtail, awstats, goaccess (y/n)" answer
 	is_speedtest
 	is_netdata
 	is_logs
-    is_goaccess
+	is_goaccess
 	echo OK
 			break;;
           	[Nn]* )
@@ -1364,13 +1364,13 @@ BlackUSB, VPN-Anonimizer Pack (${lm8[${es}]})? (y/n)" answer
           [Yy]* )
 		# execute command yes
 	is_security
-    is_dnsmasq
+	is_dnsmasq
 	is_ids
 	is_clamav
 	is_pass
 	is_audit
-    is_vpn
-    is_blackusb
+	is_vpn
+	is_blackusb
 	echo OK
 			break;;
           	[Nn]* )
