@@ -512,7 +512,7 @@ function is_top(){
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	service ntopng start
+	killall -9 ntopng && service ntopng start
 	echo "<--| Ntopng start $date |-->" >> /var/log/alert.log
 	fi
 	date=`date +%d/%m/%Y" "%H:%M:%S`
@@ -521,7 +521,7 @@ function is_top(){
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	service redis-server start
+	killall -9 redis-server && service redis-server start
 	echo "<--| redis-server start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
@@ -576,7 +576,7 @@ function is_iptraf(){
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	killall iptraf
+	killall -9 iptraf
 	iptraf -i all -L /var/log/iptraf/ip_traffic-1.log -B
 	service apache2 restart
 	echo "<--| Iptraf start $date |-->" >> /var/log/alert.log
@@ -606,7 +606,7 @@ function is_monitor(){
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	service monitorix start && service apache2 restart
+	killall -9 monitorix && service monitorix start && service apache2 restart
 	echo "<--| Monitorix start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
@@ -632,7 +632,7 @@ function is_bandwidthd(){
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	/etc/init.d/bandwidthd start && service apache2 restart
+	killall -9 bandwidthd && /etc/init.d/bandwidthd start && service apache2 restart
 	echo "<--| Bandwidthd start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
@@ -660,7 +660,7 @@ function is_netdata(){
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	/usr/sbin/netdata
+	killall -9 netdata && /usr/sbin/netdata
 	echo "<--| NetData start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
@@ -683,6 +683,16 @@ function is_logs(){
 	sudo cp -f $gp/conf/logs/awstats /etc/cron.d/awstats
 	sudo cp -f $gp/conf/logs/init.cfg /etc/darkstat/init.cfg
 	sudo sysv-rc-conf darkstat on
+    echo '# Darkstat Service
+	date=`date +%d/%m/%Y" "%H:%M:%S`
+	if [[ `ps -A | grep darkstat` != "" ]];then
+	echo -e "\nONLINE"
+	else
+	echo -e "\n"
+    killall -9 darkstat && /etc/init.d/darkstat start && /etc/init.d/darkstat restart
+	/usr/sbin/netdata
+	echo "<--| Darkstat start $date |-->" >> /var/log/alert.log
+	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo "darkstat: http://localhost:666//"
 	echo OK
 	echo
@@ -700,11 +710,13 @@ function is_goaccess(){
 	sudo cp -f $gp/conf/logs/goaccessaudit.conf /etc/apache2/sites-enabled/goaccessaudit.conf
 	sed -i '/goaccess/r $gp/conf/logs/iptgoaccess.txt' $gp/conf/scripts/iptables.sh
 	sed -i '/goaccess/r $gp/conf/logs/goaccessport.txt' $gp/conf/apache/ports.conf
-	sudo crontab -l | { cat; echo 'zcat `find /var/log/apache2/ -name "access.log.*.gz" -mtime -35` | goaccess > /var/www/html/goaccess/goaccess.html'; } | sudo crontab -
+	sudo crontab -l | { cat; echo '@daily zcat `find /var/log/apache2/ -name "access.log.*.gz" -mtime -35` | goaccess > /var/www/html/goaccess/goaccess.html'; } | sudo crontab -
 	echo OK
-	echo "Goaccess daily logs: http://192.168.0.10:11700"
+	echo "Goaccess logs: http://192.168.0.10:11700"
 	echo
 }
+
+sudo crontab -l | { cat; echo "@daily tail -50 /var/log/iptraf/ip_traffic-1.log > /var/www/html/iptrafaudit/iptrafaudit.log"; } | sudo crontab -
 
 while true; do
     read -p "${lm7[${es}]} Pack Reports, Logs, Monitoring? (recommended-recomendado)
@@ -871,7 +883,7 @@ while true; do
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	teamviewer --daemon start
+	killall -9 teamviewerd && teamviewer --daemon start
 	echo "<--| Teamviewer start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
@@ -943,7 +955,7 @@ ${cm12[${es}]}? (y/n)" answer
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	service smbd start
+	killall -9 smbd && killall -9 nmbd
 	systemctl restart smbd && systemctl restart nmbd
 	echo "<--| Samba (smbd) start $date |-->" >> /var/log/alert.log
 	fi
@@ -954,6 +966,7 @@ ${cm12[${es}]}? (y/n)" answer
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
+	killall -9 smbd && killall -9 nmbd
 	systemctl restart smbd && systemctl restart nmbd
 	echo "<--| Samba (nmbd) start $date |-->" >> /var/log/alert.log
 	fi
@@ -1015,6 +1028,7 @@ Fail2ban, DDOSDeflate, Mod Security, OWASP, Evasive, Rootkitchk (y/n)" answer
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
+    killall -9 fail2ban >/dev/null 2>&1
 	rm -rf /var/run/fail2ban/fail2ban.sock >/dev/null 2>&1
 	service fail2ban start && service rsyslog restart
 	echo "<--| Fail2ban start $date |-->" >> /var/log/alert.log
@@ -1132,7 +1146,7 @@ deactivate resolvconf - restore resolv.conf (y/n)" answer
 	echo -e "\nONLINE"
 	else
 	echo -e "\n"
-	/etc/init.d/dnsmasq start
+    killall -9 dnsmasq && /etc/init.d/dnsmasq start
 	echo "<--| dnsmasq start $date |-->" >> /var/log/alert.log
 	fi'>> $gp/conf/scripts/servicesreload.sh
 	echo OK
