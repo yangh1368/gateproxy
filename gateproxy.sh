@@ -376,8 +376,6 @@ echo
 	wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && sleep 1 && sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list' && sleep 1 && sudo gpg --keyserver keys.gnupg.net --recv-key A040830F7FAC5991 && sleep 1 && sudo gpg --export --armor $PUBKRY | sudo apt-key add -
 	# Firefox
 	sudo sh -c 'echo "deb http://ppa.launchpad.net/ubuntu-mozilla-security/ppa/ubuntu $(lsb_release -sc) main" >> /etc/apt/sources.list' && sleep 1 && sudo gpg --keyserver keys.gnupg.net --recv-key A6DCF7707EBC211F && sleep 1 && sudo gpg --export --armor $PUBKRY | sudo apt-key add -
-    # Opera
-	wget -q -O - http://deb.opera.com/archive.key | sudo apt-key add - && sleep 1 && sudo sh -c 'echo "deb http://deb.opera.com/opera-stable/ stable non-free" >> /etc/apt/sources.list.d/opera.list'
 	# Webmin
 	sudo sh -c 'echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list' && wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add -
 	# Systemback
@@ -385,7 +383,7 @@ echo
     # Remove sendmail
 	sudo service sendmail stop >/dev/null 2>&1 && sudo update-rc.d -f sendmail remove
 	# Pack Install
-	sudo apt update && sudo apt -f install && sudo apt -y install build-essential checkinstall cdbs devscripts dh-make fakeroot libxml-parser-perl check avahi-daemon automake make dpatch patchutils autotools-dev debhelper quilt xutils lintian cmake libtool autoconf git git-core subversion bzr gcc patch module-assistant libupnp-dev dkms linux-headers-$(uname -r) rcconf dialog aptitude bleachbit gksu libgksu2-0 vmm libglib2.0-0 ntfs-config dconf-editor dconf-tools jfsutils sysinfo hardinfo deborphan gtkorphan xsltproc lshw-gtk gedit curl openssl uudeview bluefish geany gparted xfsprogs reiserfsprogs reiser4progs kpartx dmraid util-linux preload prelink synaptic perl libwww-perl libmailtools-perl libmime-lite-perl librrds-perl libdbi-perl libxml-simple-perl libhttp-server-simple-perl libconfig-general-perl libio-socket-ssl-perl libdate-manip-perl libclass-dbi-mysql-perl libnet-ssleay-perl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python python-pcapy python-cairo python-gi python-gobject python-gobject-2 python-gtk2 python-notify python-dev python-glade2 unattended-upgrades gnome-disk-utility gdebi gdebi-core unace zip unzip p7zip-full sharutils mpack arj cabextract rar unrar file-roller ipset vim ttf-dejavu hfsplus hfsprogs hfsutils hfsutils-tcltk exfat-fuse exfat-utils zenity w3m lsscsi winbind fping p7zip-rar linux-tools-common searchmonkey ppa-purge google-chrome-stable firefox opera webmin snapd systemback systemback-locales unetbootin rrdtool procps geoip-database netmask sipcalc ipcalc dmidecode libsasl2-modules postfix postfix-mysql postfix-doc mailutils netmask sysv-rc-conf && sudo apt -f install && sudo dpkg --configure -a && sudo apt -f install && sudo m-a prepare
+	sudo apt update && sudo apt -f install && sudo apt -y install build-essential checkinstall cdbs devscripts dh-make fakeroot libxml-parser-perl check avahi-daemon automake make dpatch patchutils autotools-dev debhelper quilt xutils lintian cmake libtool autoconf git git-core subversion bzr gcc patch module-assistant libupnp-dev dkms linux-headers-$(uname -r) rcconf dialog aptitude bleachbit gksu libgksu2-0 vmm libglib2.0-0 ntfs-config dconf-editor dconf-tools jfsutils sysinfo hardinfo deborphan gtkorphan xsltproc lshw-gtk gedit curl openssl uudeview bluefish geany gparted xfsprogs reiserfsprogs reiser4progs kpartx dmraid util-linux preload prelink synaptic perl libwww-perl libmailtools-perl libmime-lite-perl librrds-perl libdbi-perl libxml-simple-perl libhttp-server-simple-perl libconfig-general-perl libio-socket-ssl-perl libdate-manip-perl libclass-dbi-mysql-perl libnet-ssleay-perl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python python-pcapy python-cairo python-gi python-gobject python-gobject-2 python-gtk2 python-notify python-dev python-glade2 unattended-upgrades gnome-disk-utility gdebi gdebi-core unace zip unzip p7zip-full sharutils mpack arj cabextract rar unrar file-roller ipset vim ttf-dejavu hfsplus hfsprogs hfsutils hfsutils-tcltk exfat-fuse exfat-utils zenity w3m lsscsi winbind fping p7zip-rar linux-tools-common searchmonkey ppa-purge google-chrome-stable firefox webmin snapd systemback systemback-locales unetbootin rrdtool procps geoip-database netmask sipcalc ipcalc dmidecode libsasl2-modules postfix postfix-mysql postfix-doc mailutils netmask sysv-rc-conf && sudo apt -f install && sudo dpkg --configure -a && sudo apt -f install && sudo m-a prepare
 	sudo cp -f /etc/postfix/master.cf{,.bak} >/dev/null 2>&1
 	sudo cp -f $gp/conf/mail/master.cf /etc/postfix/master.cf
 	sudo cp -f /etc/postfix/main.cf{,.bak} >/dev/null 2>&1
@@ -399,6 +397,12 @@ echo
     sudo rm ubuntu-tweak*.deb >/dev/null 2>&1 && sudo apt -y purge ubuntu-tweak >/dev/null 2>&1
 	wget -c --retry-connrefused -t 0 http://archive.getdeb.net/ubuntu/pool/apps/u/ubuntu-tweak/ubuntu-tweak_0.8.7-1~getdeb2~xenial_all.deb
 	sudo dpkg -i --force-depends ubuntu-tweak_0.8.7-1~getdeb2~xenial_all.deb && sudo apt-get -f install
+	echo OK
+    # Opera
+	latest=$(wget 'http://download4.operacdn.com/ftp/pub/opera/desktop/' -O - | grep -oP '[\d]+\.([\d]+\.?){1,4}' | sort -u | tail -1)
+	wget -c --retry-connrefused -t 0 "http://download4.operacdn.com/ftp/pub/opera/desktop/$latest/linux/opera-stable_${latest}_amd64.deb"
+	sudo apt -y install apt-transport-https libcurl3
+    sudo dpkg -i opera*.deb && sudo apt-get install -f
 	echo OK
 
 updateandclean
